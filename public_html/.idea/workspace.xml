@@ -12,16 +12,34 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DatabaseView">
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="104" column="2" lean-forward="true" selection-start-line="104" selection-start-column="2" selection-end-line="104" selection-end-column="2" />
+            <state relative-caret-position="335">
+              <caret line="81" column="16" lean-forward="true" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
               <folding>
-                <element signature="e#2784#2953#0#PHP" expanded="true" />
+                <element signature="e#4321#4490#0#PHP" expanded="true" />
+                <marker date="1486515725195" expanded="true" signature="1405:1698" ph="..." />
+                <marker date="1486515725195" expanded="true" signature="1731:1927" ph="INSERT INTO fsa... " />
+                <marker date="1486515725195" expanded="true" signature="1965:1989" ph="INSERT INTO fsa... " />
+                <marker date="1486515725195" expanded="true" signature="1965:2020" ph="INSERT INTO fsa... " />
+                <marker date="1486515725195" expanded="true" signature="1965:2051" ph="INSERT INTO fsa... " />
+                <marker date="1486515725195" expanded="true" signature="2607:2624" ph="SELECT * FRO... fsa" />
+                <marker date="1486515725195" expanded="true" signature="3188:3205" ph="..." />
+                <marker date="1486515725195" expanded="true" signature="3188:3257" ph="..." />
+                <marker date="1486515725195" expanded="true" signature="4234:4312" ph="..." />
+                <marker date="1486515725195" expanded="true" signature="4285:4302" ph="SELECT * FRO... fsa" />
               </folding>
             </state>
           </provider>
@@ -62,7 +80,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -78,6 +95,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -155,11 +173,12 @@
       <workItem from="1485815745535" duration="4634000" />
       <workItem from="1485831808328" duration="1469000" />
       <workItem from="1485909762250" duration="2859000" />
+      <workItem from="1486511138014" duration="4571000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8962000" />
+    <option name="totallyTimeSpent" value="13533000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1362" height="741" extended-state="0" />
@@ -200,7 +219,17 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#2784#2953#0#PHP" expanded="true" />
+            <element signature="e#4321#4490#0#PHP" expanded="true" />
+            <marker date="1486515725195" expanded="true" signature="1405:1698" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="1731:1927" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:1989" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2020" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2051" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="2607:2624" ph="SELECT * FRO... fsa" />
+            <marker date="1486515725195" expanded="true" signature="3188:3205" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="3188:3257" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4234:4312" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4285:4302" ph="SELECT * FRO... fsa" />
           </folding>
         </state>
       </provider>
@@ -210,17 +239,57 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#2784#2953#0#PHP" expanded="true" />
+            <element signature="e#4321#4490#0#PHP" expanded="true" />
+            <marker date="1486515725195" expanded="true" signature="1405:1698" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="1731:1927" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:1989" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2020" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2051" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="2607:2624" ph="SELECT * FRO... fsa" />
+            <marker date="1486515725195" expanded="true" signature="3188:3205" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="3188:3257" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4234:4312" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4285:4302" ph="SELECT * FRO... fsa" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="104" column="2" lean-forward="true" selection-start-line="104" selection-start-column="2" selection-end-line="104" selection-end-column="2" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#2784#2953#0#PHP" expanded="true" />
+            <element signature="e#4321#4490#0#PHP" expanded="true" />
+            <marker date="1486515725195" expanded="true" signature="1405:1698" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="1731:1927" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:1989" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2020" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2051" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="2607:2624" ph="SELECT * FRO... fsa" />
+            <marker date="1486515725195" expanded="true" signature="3188:3205" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="3188:3257" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4234:4312" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4285:4302" ph="SELECT * FRO... fsa" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="81" column="16" lean-forward="true" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
+          <folding>
+            <element signature="e#4321#4490#0#PHP" expanded="true" />
+            <marker date="1486515725195" expanded="true" signature="1405:1698" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="1731:1927" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:1989" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2020" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="1965:2051" ph="INSERT INTO fsa... " />
+            <marker date="1486515725195" expanded="true" signature="2607:2624" ph="SELECT * FRO... fsa" />
+            <marker date="1486515725195" expanded="true" signature="3188:3205" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="3188:3257" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4234:4312" ph="..." />
+            <marker date="1486515725195" expanded="true" signature="4285:4302" ph="SELECT * FRO... fsa" />
           </folding>
         </state>
       </provider>

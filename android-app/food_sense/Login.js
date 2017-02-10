@@ -6,6 +6,14 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
 
 export default class Login extends Component{
+	constructor(props) {
+		super(props);
+		this.state = {
+			username: ''
+		};
+	}	
+
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -13,17 +21,28 @@ export default class Login extends Component{
 					<Text style={styles.title}>Food Sense</Text>
 				</View>
 
-				<View style = {styles.responsiveSpacing}>
+				<View style = {{marginTop:height * .15}}>
 					<TextInput
+						autoFocus={true}
 						placeholder ="username or email"
+						placeholderTextColor = "#029c88"
+						value ={this.state.username}
+						onChangeText = {username => this.setState({username})}
+					/>
+				</View>
+
+				<View style = {{marginTop:height * .02}}>
+					<TextInput
+						ref="password"
+						placeholder ="password"
 						placeholderTextColor = "#029c88"
 						style={styles.input}
 					/>
 				</View>
 
-				<View style = {styles.responsiveSpacing}>
+				<View style = {{marginTop: height * .1}}>
 					<Button
-						onPress = {onLoginPress}
+						onPress = {()=>onLoginPress(this.state.username)}
 						title = "Login"
 						color = "#029c88"
 						accessibilityLabel="Login to the Application after entering password"
@@ -67,8 +86,9 @@ const styles = StyleSheet.create({
 });
 
 {/* This handles login button presses*/}
-const onLoginPress = () => {
-	Alert.alert('You poked me!');
+const onLoginPress = (username) => {
+	Alert.alert(username);
+
 };
 
 {/* This handles login button presses*/}

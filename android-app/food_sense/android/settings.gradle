@@ -1,0 +1,3 @@
+rootProject.name = 'food_sense'
+
+include ':app'

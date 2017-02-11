@@ -12,12 +12,12 @@ import {
   View
 } from 'react-native';
 
-import Login from './Login';
-
+import Login from './src/components/Login';
+import SignUp from './src/components/SignUp';
 export default class food_sense extends Component {
   render() {
     return (
-      <Login />
+      <SignUp />
     );
   }
 }

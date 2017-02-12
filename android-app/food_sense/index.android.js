@@ -9,15 +9,17 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  StatusBar
 } from 'react-native';
 
 import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
+import TabHolder from './src/components/TabHolder';
 export default class food_sense extends Component {
   render() {
-    return (
-      <SignUp />
+    return (        
+      <TabHolder />
     );
   }
 }

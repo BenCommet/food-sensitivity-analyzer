@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
-import { StyleSheet, View, Text, Button, Alert, TextInput} from 'react-native';
+import { StyleSheet, View, Text, Alert, TextInput, StatusBar, Button} from 'react-native';
 import Dimensions from 'Dimensions'
-
+import {Container, Content } from 'native-base';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
 
@@ -16,48 +16,57 @@ export default class Login extends Component{
 
 	render() {
 		return (
-			<View style={styles.container}>
-				<View style={styles.logoContainer}>
-					<Text style={styles.title}>Food Sense</Text>
-				</View>
+			<Container>
+				<Content>
+					<View style={styles.container}>
+				        <StatusBar
+				          backgroundColor='#029c88'
+				          barStyle="light-content"
+				        />
 
-				<View style = {{marginTop:height * .15}}>
-					<TextInput
-						autoFocus={true}
-						placeholder ="username or email"
-						placeholderTextColor = "#029c88"
-						value ={this.state.username}
-						onChangeText = {username => this.setState({username})}
-					/>
-				</View>
+						<View style={styles.logoContainer}>
+							<Text style={styles.title}>Food Sense</Text>
+						</View>
 
-				<View style = {{marginTop:height * .02}}>
-					<TextInput
-						ref="password"
-						placeholder ="password"
-						placeholderTextColor = "#029c88"
-						style={styles.input}
-					/>
-				</View>
+						<View style = {{marginTop:height * .15}}>
+							<TextInput
+								autoFocus={true}
+								placeholder ="username or email"
+								placeholderTextColor = "#029c88"
+								value ={this.state.username}
+								onChangeText = {username => this.setState({username})}
+							/>
+						</View>
 
-				<View style = {{marginTop: height * .1}}>
-					<Button
-						onPress = {()=>onLoginPress(this.state.username)}
-						title = "Login"
-						color = "#029c88"
-						accessibilityLabel="Login to the Application after entering password"
-					/>
-				</View>
+						<View style = {{marginTop:height * .02}}>
+							<TextInput
+								ref="password"
+								placeholder ="password"
+								placeholderTextColor = "#029c88"
+								style={styles.input}
+							/>
+						</View>
 
-				<View style = {styles.responsiveSpacing}>
-					<Button
-						onPress = {onLoginPress}
-						title = "Sign Up"
-						color = "#029c88"
-						accessibilityLabel="Sign Up for the Application"
-					/>
-				</View>
-			</View>
+						<View style = {{marginTop: height * .1}}>
+							<Button
+								onPress = {()=>onLoginPress(this.state.username)}
+								title = "Login"
+								color = "#029c88"
+								accessibilityLabel="Login to the Application after entering password"
+							/>
+						</View>
+
+						<View style = {styles.responsiveSpacing}>
+							<Button
+								onPress = {onLoginPress}
+								title = "Sign Up"
+								color = "#029c88"
+								accessibilityLabel="Sign Up for the Application"
+							/>
+						</View>
+					</View>
+				</Content>
+			</Container>
 		);
 	}
 } 

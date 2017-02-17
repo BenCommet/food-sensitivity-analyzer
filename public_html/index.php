@@ -17,14 +17,6 @@
 </head>
 
 
-<!--PHP Server Page for the Food Sensitivity Analyzer Database.
-     This test page is intended for testing of the database, the
-     FSA application will only post to this server (i.e. all html on this
-     page is for testing only and will not be used by the app).
-
-     - Mitch Hickox, January 30th 2017
- -->
-
 
 <!-- Some initial MySQL commands
 
@@ -70,10 +62,10 @@ try {
 ?>
 
 <!-- Start of HTML -->
-<p>PHP Server Page for the Food Sensitivity Analyzer Database.
-    This test page is intended for testing and debugging of the database and application, the
-    FSA application will only post to this server (i.e. all html on this
-    page is for testing only and will not be used by the app).</p>
+<p>PHP Testing Page for the Food Sensitivity Analyzer Database.
+    This test page is intended for testing and debugging of the database and application (i.e. all html on this
+    page is for testing only and will not be used by the app).
+    The FSA application will post to the server at http://www.cis.gvsu.edu/~hickoxm/FSArequest.php</p>
 
 
 

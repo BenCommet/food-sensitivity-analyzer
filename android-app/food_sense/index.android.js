@@ -10,17 +10,33 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar
+  StatusBar,
+  Navigator
 } from 'react-native';
 
 import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
-import TabHolder from './src/components/TabHolder';
+import Journal from './src/components/Journal';
 export default class food_sense extends Component {
   render() {
-    return (        
-      <TabHolder />
+    return (
+      <Navigator
+        initialRoute = {{id: 'SignUp'}}
+        renderScene = {this.navigatorRenderScene}
+        />
     );
+  }
+
+  navigatorRenderScene(route, navigator){
+    _navigator = navigator;
+    switch(route.id){
+      case 'Login':
+        return(<Login navigator={navigator} title = "Login"/>);
+      case 'SignUp':
+        return(<SignUp navigator={navigator} title = "SignUp"/>);
+      case 'Journal':
+        return(<Journal navigator={navigator} title = "Journal"/>);
+    }
   }
 }
 

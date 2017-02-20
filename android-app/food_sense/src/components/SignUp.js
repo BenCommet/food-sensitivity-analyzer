@@ -1,6 +1,8 @@
 import React, { Component} from 'react';
 import { StyleSheet, View, Text, Alert, TextInput, StatusBar, ScrollView} from 'react-native';
 import {Icon, Button} from 'native-base';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { Fumi } from 'react-native-textinput-effects';
 import Dimensions from 'Dimensions';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
@@ -10,6 +12,7 @@ export default class SignUp extends Component{
 		super(props);
 		this.state = {
 			username: '',
+			email: '',
 			password: '',
 			confirmPassword:''
 		};
@@ -27,39 +30,63 @@ export default class SignUp extends Component{
 				</View>
 				<View>
 					<ScrollView>
-						<Text >Enter an Email</Text>
-						<TextInput
-							placeholder ="Email"
-							placeholderTextColor = "#26A69A"
-							keyboardType = 'email-address'
-							value ={this.state.username}
+						<Fumi
+							style = {styles.input}
+							label={'Username'}
+							iconClass={FontAwesomeIcon}
+							iconName={'envelope'}
+							iconColor={'#26A69A'}
+							value = {this.state.username}
 							onChangeText = {username => this.setState({username})}
 							onSubmitEditing={(event) => {
 								this.refs.passwordText.focus();
 							}}
-						/>
-						<TextInput
+						  />
+						<Fumi
+						  	style = {styles.input}
+							label={'Email'}
+							iconClass={FontAwesomeIcon}
+							iconName={'envelope'}
+							iconColor={'#26A69A'}
+							value = {this.state.username}
+							onChangeText = {email => this.setState({email})}
+							onSubmitEditing={(event) => {
+								this.refs.passwordText.focus();
+							}}
+						  />
+						<Fumi
+						  	style = {styles.input}
 							ref="passwordText"
-							placeholder ="Pick Password"
-							placeholderTextColor = "#26A69A"
+							label={'Create a Password'}
+							iconClass={FontAwesomeIcon}
+							iconName={'key'}
+							iconColor={'#26A69A'}
 							secureTextEntry = {true}
-							value ={this.state.password}
+							value = {this.state.password}
 							onChangeText = {password => this.setState({password})}
 							onSubmitEditing={(event) => {
 								this.refs.confirmPasswordText.focus();
 							}}
-						/>
-						<TextInput
-							ref="confirmPasswordText"
-							placeholder ="Confirm Password"
-							placeholderTextColor = "#26A69A"
+						  />
+						  <Fumi
+						  	style = {styles.input}
+						  	ref="confirmPasswordText"
+  							label={'Confirm Password'}
+  							iconClass={FontAwesomeIcon}
+  							iconName={'key'}
 							secureTextEntry = {true}
-							value ={this.state.confirmPassword}
-							onChangeText = {confirmPassword => this.setState({confirmPassword})}
-							onSubmitEditing={(event) => {
-								this.refs.password.focus();
-							}}
-						/>
+  							iconColor={'#26A69A'}
+  							value = {this.state.confirmPassword}
+  							onChangeText = {confirmPassword => this.setState({confirmPassword})}
+  							onSubmitEditing={(event) => {
+  								this.refs.passwordText.focus();
+  							}}
+  						  />
+						  <Button block style = {{marginTop: height * .02, backgroundColor: '#26A69A'}}>
+						  	<Text style={{color: '#FFFFFF', fontSize: height * .03}}>
+							Create Account!
+							</Text>
+						  </Button>
 					</ScrollView>
 				</View>
 
@@ -71,6 +98,7 @@ export default class SignUp extends Component{
 const styles = StyleSheet.create({
 	container: {
 		flex:1,
+		backgroundColor: '#E0F2F1'
 	},
 	logoContainer: {
 		alignItems: 'center',
@@ -98,7 +126,15 @@ const styles = StyleSheet.create({
 		width: width * .5,
 		fontSize: height * .07,
 		color: "#FFFFFF"
+	},
+	input:{
+		marginTop: height * .01
+	},
+	buttonStyle:{
+		marginTop:height * .02,
+		width: width * .95
 	}
+
 
 
 });

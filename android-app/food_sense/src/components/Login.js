@@ -1,5 +1,7 @@
 import React, { Component} from 'react';
 import { StyleSheet, View, Text, Alert, TextInput, StatusBar, Button, ScrollView} from 'react-native';
+import { Fumi } from 'react-native-textinput-effects';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions'
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
@@ -29,25 +31,32 @@ export default class Login extends Component{
 					</View>
 
 					<View style = {{marginTop:height * .15}}>
-						<Text >Enter an Email</Text>
-						<TextInput
-							placeholder ="username or email"
-							placeholderTextColor = "#26A69A"
-							keyboardType = 'email-address'
-							value ={this.state.username}
-							onChangeText = {username => this.setState({username})}
-							onSubmitEditing={(event) => {
-								this.refs.password.focus();
-							}}
-						/>
+							<Fumi
+							  	style = {styles.input}
+								label={'Email'}
+								iconClass={FontAwesomeIcon}
+								iconName={'envelope'}
+								iconColor={'#26A69A'}
+								value = {this.state.username}
+								onChangeText = {username => this.setState({username})}
+								onSubmitEditing={(event) => {
+									this.refs.passwordText.focus();
+								}}
+							  />
 					</View>
 
 					<View style = {{marginTop:height * .02}}>
-						<TextInput
-							ref="password"
-							placeholder ="password"
-							placeholderTextColor = "#26A69A"
-							style={styles.input}
+						<Fumi
+						  	style = {styles.input}
+							ref="passwordText"
+							label={'Enter Password'}
+							iconClass={FontAwesomeIcon}
+							iconName={'key'}
+							iconColor={'#26A69A'}
+							secureTextEntry = {true}
+							value = {this.state.password}
+							onChangeText = {password => this.setState({password})}
+
 						/>
 					</View>
 
@@ -102,7 +111,7 @@ const onLoginPress = (username, password, _navigator) => {
 	else{
 		if(attemptLogin(username, password)){
 			_navigator.push({
-				id: 'SignUp'
+				id: 'Journal'
 			})
 		}
 	}

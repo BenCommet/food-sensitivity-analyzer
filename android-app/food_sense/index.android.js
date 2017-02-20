@@ -21,7 +21,7 @@ export default class food_sense extends Component {
   render() {
     return (
       <Navigator
-        initialRoute = {{id: 'SignUp'}}
+        initialRoute = {{id: 'Login'}}
         renderScene = {this.navigatorRenderScene}
         />
     );

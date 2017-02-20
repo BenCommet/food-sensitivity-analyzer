@@ -11,12 +11,22 @@ import {
   Text,
   View,
   StatusBar,
-  Navigator
+  Navigator,
+  BackAndroid
 } from 'react-native';
 
 import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
 import Journal from './src/components/Journal';
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator.getCurrentRoutes().length === 1  ) {
+     return false;
+  }
+  _navigator.pop();
+  return true;
+});
+
 export default class food_sense extends Component {
   render() {
     return (

@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
-import { StyleSheet, View, Text, Alert, TextInput, StatusBar, ScrollView} from 'react-native';
-import {Icon, Button} from 'native-base';
+import { StyleSheet, View, Text, Alert, TextInput, StatusBar, ScrollView, Button} from 'react-native';
+import {Icon} from 'native-base';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Fumi } from 'react-native-textinput-effects';
 import Dimensions from 'Dimensions';
@@ -20,18 +20,13 @@ export default class SignUp extends Component{
 	render() {
 		return (
 			<View style={styles.container}>
-				<View style = {styles.header}>
-					<View style = {styles.headerRect} >
-						<Button transparent>
-							<Icon name='ios-arrow-back' style={{color: "#FFFFFF", fontSize: height * .08, marginTop: height * .02}} />
-						</Button>
-						<Text style = {styles.headerText}>Food Sense</Text>
-					</View>
-				</View>
 				<View>
+					<View style={styles.logoContainer}>
+						<Text style={styles.title}>Food Sense</Text>
+					</View>
 					<ScrollView>
 						<Fumi
-							style = {styles.input}
+							style = {{marginTop: height * .15}}
 							label={'Username'}
 							iconClass={FontAwesomeIcon}
 							iconName={'envelope'}
@@ -82,11 +77,15 @@ export default class SignUp extends Component{
   								this.refs.passwordText.focus();
   							}}
   						  />
-						  <Button block style = {{marginTop: height * .02, backgroundColor: '#26A69A'}}>
-						  	<Text style={{color: '#FFFFFF', fontSize: height * .03}}>
-							Create Account!
-							</Text>
-						  </Button>
+						  <View style = {{marginTop: height * .05}}>
+	  						<Button
+	  							ref = "loginButton"
+	  							onPress = {()=>onLoginPress(this.state.username, this.state.password, this.props.navigator)}
+	  							title = "Create Account"
+	  							color = "#26A69A"
+	  							accessibilityLabel="Login to the Application after entering password"
+	  						/>
+	  					</View>
 					</ScrollView>
 				</View>
 
@@ -97,8 +96,7 @@ export default class SignUp extends Component{
 
 const styles = StyleSheet.create({
 	container: {
-		flex:1,
-		backgroundColor: '#E0F2F1'
+		flex:1
 	},
 	logoContainer: {
 		alignItems: 'center',
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
 		fontSize: 30
 	},
 	responsiveSpacing: {
-		marginTop: height * .1
+		marginTop: 0
 	},
 	header: {
 
@@ -139,8 +137,9 @@ const styles = StyleSheet.create({
 
 });
 
-const onBack = (_navigator) => {
-	_navigator.push({
-		id: 'SignUp'
-	})
-};
+{/*This tests to see if an email address is in a valid format*/}
+function validateEmail(email)
+{
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}

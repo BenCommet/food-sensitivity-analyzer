@@ -1,7 +1,8 @@
 import React, { Component} from 'react';
-import { StyleSheet, View, StatusBar, ScrollView } from 'react-native';
+import { StyleSheet, View, StatusBar, ScrollView, Modal, TouchableHighlight, Picker} from 'react-native';
 import {Container, Content, Header, Title, Button, Subtitle, Left,
 	Right, Body, Card, CardItem, Text, Fab} from 'native-base';
+const Item = Picker.Item;
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions';
 
@@ -17,6 +18,10 @@ var cardData = [{name: "Chicken Sandwich", isSymptom: false, onsetDate: "Wednesd
 {name: "McDouble", isSymptom: false, onsetDate: "Monday", onsetTime: '8:00 pm'},
 {name: "Captain Crunch", isSymptom: false, onsetDate: "Sunday", onsetTime: '9:00 am'},
 {name: "Headache", isSymptom: true, onsetDate: "Sunday", onsetTime: '10:00 pm'}];
+var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
+var recentFoodsPicker = [];
+var recentSymptoms =["Headache", "Runny Nose"];
+var recentSymptomsPicker =[];
 var cards = [];
 for(var i = 0; i < cardData.length; i++){
 	var cardObject = cardData[i];
@@ -25,46 +30,151 @@ for(var i = 0; i < cardData.length; i++){
 	}
 	else{ cards.push(makeFoodCard(cardObject, i)); }
 }
+for(var i = 0; i < recentFoods.length; i++){
+	recentFoodsPicker.push(<Item label={recentFoods[i]} key = {i}/>);
+}
+for(var i = 0; i < recentSymptoms.length; i++){
+	recentSymptomsPicker.push(<Item label={recentSymptoms[i]} key = {i}/>);
+}
 export default class Journal extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
 			username: '',
 			password: '',
-			active: false
+			active: false,
+			symptomModalVisible: false,
+			foodModalVisible: false,
+			selectedItem: undefined,
+			newName: 'recentFoods'
 		};
 	}
+
+	setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+	onValueChange (value: string) {
+        this.setState({
+            newName : value
+        });
+    }
 
 	render() {
 		return (
 			<View>
+				<View >
+	        <Modal
+	          animationType={"slide"}
+	          transparent={true}
+	          visible={this.state.foodModalVisible}
+	          onRequestClose={() => {alert("Modal has been closed.")}}
+	          >
+						<View style = {{height: height * .4}}>
+							<Card>
+								<CardItem header>
+									<Left>
+										<Icon
+											active name ='apple'
+											size = {height * .07}
+											color = "#f44842"
+										/>
+									</Left>
+									<Text style = {{fontSize: height * .04, textAlign: 'center'}}>New Food Item</Text>
+									<Right>
+									<Icon.Button
+										backgroundColor = "transparent"
+										active name ='times-circle'
+										size = {height * .06}
+										color = "#f44842"
+										onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible})}
+									/>
+									</Right>
+								</CardItem>
+									<Text style = {{textAlign:'center'}}>Choose from Recent Foods</Text>
+									<Picker
+										mode = "dropdown"
+										iosHeader="Recent Foods"
+										selectedValue={this.state.newName}
+										onValueChange={this.onValueChange.bind(this)}>
+										{recentFoodsPicker}
+									</Picker>
+							</Card>
+						</View>
+	        </Modal>
+
+					<Modal
+	          animationType={"slide"}
+	          transparent={true}
+	          visible={this.state.symptomModalVisible}
+	          onRequestClose={() => {alert("Modal has been closed.")}}
+	          >
+						<View style = {{height: height * .4}}>
+							<Card>
+								<CardItem header>
+									<Left>
+										<Icon
+											active name ='heartbeat'
+											size = {height * .07}
+											color = "#f44842"
+										/>
+									</Left>
+									<Text style = {{fontSize: height * .04, textAlign: 'center'}}>New Symptom</Text>
+									<Right>
+									<Icon.Button
+										backgroundColor = "transparent"
+										active name ='times-circle'
+										size = {height * .06}
+										color = "#f44842"
+										onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible})}
+									/>
+									</Right>
+								</CardItem>
+									<Text style = {{textAlign:'center'}}>Choose from Recent Foods</Text>
+									<Picker
+										mode = "dropdown"
+										iosHeader="Recent Foods"
+										selectedValue={this.state.newName}
+										onValueChange={this.onValueChange.bind(this)}>
+										{recentSymptomsPicker}
+									</Picker>
+							</Card>
+						</View>
+	        </Modal>
+	      </View>
+
 				<ScrollView>
 					{cards}
 				</ScrollView>
 				<Fab
-                    active={this.state.active}
-                    direction="up"
-                    style={{ backgroundColor: '#5067FF' }}
-                    position="bottomRight"
-					color="#26A69A"
-                    onPress={() => this.setState({ active: !this.state.active })}
-                >
-                    <Icon name="plus" />
-					<Button style={{ backgroundColor: '#26A69A' }}>
+            active={this.state.active}
+            direction="up"
+            style={{ backgroundColor: '#5067FF' }}
+            position="bottomRight"
+						color="#26A69A"
+            onPress={() => this.setState({ active: !this.state.active })}
+        >
+          <Icon name="plus" />
+					<Button
+					style={{ backgroundColor: '#26A69A' }}
+					onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible })}>
+
                             <Icon
 							 	active name ='apple'
 							 	size = {height * .04}
 								color = "#FFFFFF"
 							/>
-                    </Button>
-					<Button style={{ backgroundColor: '#26A69A' }}>
+
+          </Button>
+					<Button
+					style={{ backgroundColor: '#26A69A' }}
+					onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible })}>
                             <Icon
 							 	active name ='heartbeat'
 							 	size = {height * .04}
 								color = "#FFFFFF"
 							/>
                     </Button>
-                </Fab>
+          </Fab>
 			</View>
 		);
 	}
@@ -80,6 +190,12 @@ const styles = StyleSheet.create({
 
 });
 
+function toggleModal(toggle){
+	toggle = !toggle
+}
+function closeModule(moduleVisible){
+	moduleVisible = false;
+}
 function makeSymptomCard(cardObject, pos){
 	var card = <View key={pos}>
 		<Card>

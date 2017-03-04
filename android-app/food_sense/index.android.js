@@ -1,4 +1,4 @@
-/**
+ci/**
  * Sample React Native App
  * https://github.com/facebook/react-native
  * @flow
@@ -33,6 +33,10 @@ export default class food_sense extends Component {
       <Navigator
         initialRoute = {{id: 'Login'}}
         renderScene = {this.navigatorRenderScene}
+        configureScene = {(route) =>{
+            return Navigator.SceneConfigs.HorizontalSwipeJump;
+
+        }}
         />
     );
   }

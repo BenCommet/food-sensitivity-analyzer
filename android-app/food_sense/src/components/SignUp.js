@@ -80,7 +80,7 @@ export default class SignUp extends Component{
 						  <View style = {{marginTop: height * .05}}>
 	  						<Button
 	  							ref = "loginButton"
-	  							onPress = {()=>onLoginPress(this.state.username, this.state.password, this.props.navigator)}
+	  							onPress = {()=>attemptCreateAccount(this.state.username, this.state.email, this.state.password, this.state.confirmPassword, this.props.navigator)}
 	  							title = "Create Account"
 	  							color = "#26A69A"
 	  							accessibilityLabel="Login to the Application after entering password"
@@ -96,7 +96,8 @@ export default class SignUp extends Component{
 
 const styles = StyleSheet.create({
 	container: {
-		flex:1
+		flex:1,
+		padding: width * .02
 	},
 	logoContainer: {
 		alignItems: 'center',
@@ -142,4 +143,10 @@ function validateEmail(email)
 {
     var re = /\S+@\S+\.\S+/;
     return re.test(email);
+}
+
+function attemptCreateAccount(_username, _email, _password, _currentPassword, _navigator){
+	if(!validateEmail(_email)){
+		Alert.alert("Please input a valid email address");
+	}
 }

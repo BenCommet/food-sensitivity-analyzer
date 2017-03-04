@@ -87,7 +87,7 @@ export default class Login extends Component{
 const styles = StyleSheet.create({
 	container: {
 		flex:1,
-		padding: 20
+		padding: width * .02
 	},
 	logoContainer: {
 		alignItems: 'center',

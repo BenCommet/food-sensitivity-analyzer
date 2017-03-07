@@ -6,8 +6,8 @@ const Item = Picker.Item;
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions';
 
-import JournalTab from './JournalTab';
-import PredictorTab from './PredictorTab';
+
+import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
@@ -44,9 +44,10 @@ export default class Journal extends Component{
 			password: '',
 			active: false,
 			symptomModalVisible: false,
-			foodModalVisible: false,
+			foodModalVisible: true,
 			selectedItem: undefined,
 			newName: 'recentFoods'
+			this.state = {date:"2016-05-15"}
 		};
 	}
 
@@ -98,6 +99,27 @@ export default class Journal extends Component{
 										onValueChange={this.onValueChange.bind(this)}>
 										{recentFoodsPicker}
 									</Picker>
+									<DatePicker
+						        style={{width: width * .5}}
+						        date={this.state.date}
+						        mode="datetime"
+						        placeholder="select time"
+						        confirmBtnText="Confirm"
+						        cancelBtnText="Cancel"
+						        customStyles={{
+						          dateIcon: {
+						            position: 'absolute',
+						            left: 0,
+						            top: 4,
+						            marginLeft: 0
+						          },
+						          dateInput: {
+						            marginLeft: 36
+						          }
+						          // ... You can check the source to find the other keys.
+						        }}
+						        onDateChange={(date) => {this.setState({date: date})}}
+						      />
 							</Card>
 						</View>
 	        </Modal>
@@ -148,33 +170,31 @@ export default class Journal extends Component{
 				<Fab
             active={this.state.active}
             direction="up"
-            style={{ backgroundColor: '#5067FF' }}
+            style={{ backgroundColor: '#26A69A' }}
             position="bottomRight"
-						color="#26A69A"
             onPress={() => this.setState({ active: !this.state.active })}
         >
           <Icon name="plus" />
+
 					<Button
 					style={{ backgroundColor: '#26A69A' }}
-					onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible })}>
-
-                            <Icon
-							 	active name ='apple'
-							 	size = {height * .04}
-								color = "#FFFFFF"
-							/>
-
+					onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
+            <Icon
+						 	active name ='apple'
+						 	size = {height * .04}
+							color = "#FFFFFF"
+						/>
           </Button>
 					<Button
-					style={{ backgroundColor: '#26A69A' }}
-					onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible })}>
-                            <Icon
-							 	active name ='heartbeat'
-							 	size = {height * .04}
-								color = "#FFFFFF"
-							/>
-                    </Button>
-          </Fab>
+						style={{ backgroundColor: '#26A69A' }}
+						onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible, active: !this.state.active})}>
+	          <Icon
+						 	active name ='heartbeat'
+						 	size = {height * .04}
+							color = "#FFFFFF"
+						/>
+        	</Button>
+        </Fab>
 			</View>
 		);
 	}

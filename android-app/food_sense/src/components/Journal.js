@@ -46,8 +46,8 @@ export default class Journal extends Component{
 			symptomModalVisible: false,
 			foodModalVisible: true,
 			selectedItem: undefined,
-			newName: 'recentFoods'
-			this.state = {date:"2016-05-15"}
+			newName: 'recentFoods',
+			date: "2016-05-15"
 		};
 	}
 

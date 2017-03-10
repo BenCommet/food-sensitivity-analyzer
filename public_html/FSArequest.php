@@ -98,18 +98,20 @@ try {
 
             foreach($records as $record)
             {
-                echo "<br><br>Row $count:<br>";
+              //TODO make sure data never contains *, +, or #
+                //Record separator
+                echo "*";
                 foreach ($record as $field)
                 {
                     echo "$field";
                     //Field separator
-                    echo ":";
+                    echo "+";
                 }
                 $count += 1;
             }
+            //Data terminator
+            echo "#";
 
-            //Record separator
-            echo "*";
         }
     }
 

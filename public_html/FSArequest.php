@@ -57,9 +57,11 @@ $email           = $_GET['email'];
 $password        = $_GET['password'] ;
 $itemType        = $_GET['itemType'];
 $itemName        = $_GET['itemName'];
+$time            = $_GET['time'];
 $description     = $_GET['desc'];
 //database entry names: userName, email, password, type, fisName, time, description
 
+//echo $requestType;
 
 
 
@@ -125,7 +127,7 @@ if($requestType == "insert")
         $db->exec("INSERT INTO fsa
          (userName, email, password, type, fisName, time, description)
      VALUES
-         ('$userName', '$email','$password', '$itemType', '$itemName', NOW(), '$description')");
+         ('$userName', '$email','$password', '$itemType', '$itemName', '$time', '$description')");
 
         echo "T";
     }
@@ -139,17 +141,19 @@ if($requestType == "insert")
 //userSignUp
 if($requestType == "userSignUp")
 {
+
     try{
 
-        //TODO enter select query
-        $result = $db->query("SELECT COUNT(time) AS Exists FROM fsa WHERE email=$email;");
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
-        $count = $data[0][0]; //TODO might need to change this line
+        //check if this email is already in use
+        $result = $db->query("SELECT * FROM fsa WHERE email='$email';");
+        $count = $result->rowCount();
 
 
 
+        //Email already taken
         if($count > 0)
         {
+          //Is email available?
             echo "F";
         }
         else
@@ -180,15 +184,15 @@ if($requestType == "userLogin")
 {
     try{
 
-        //TODO enter select query
-        $result = $db->query("SELECT COUNT(time) AS Exists FROM fsa WHERE email=$email;");
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
-        $countEmail = $data[0][0]; //TODO might need to change this line
 
+        //check if any users have this email
+        $result = $db->query("SELECT * FROM fsa WHERE email='$email';");
+        $countEmail = $result->rowCount();
 
-        $result = $db->query("SELECT COUNT(time) AS Exists FROM fsa WHERE email=$email AND password=$password;");
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
-        $countEmailAndPassword = $data[0][0]; //TODO might need to change this line
+        //check if this password goes with this email
+        $result = $db->query("SELECT * FROM fsa WHERE email='$email' AND password='$password';");
+        $countEmailAndPassword = $result->rowCount();
+
 
         if($countEmail > 0 && $countEmailAndPassword == 0)
         {

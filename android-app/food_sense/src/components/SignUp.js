@@ -191,7 +191,9 @@ function attemptCreateAccount(_username, _email, _password, _confirmPassword, _n
 			url = url + '&userName=';
 			url = url + _username;
 			url = url + '&password=';
-			url - url + _password;
+			url = url + _password;
+			url = url + '&email=';
+			url = url + _email;
 
 
 			request.open('GET', url);

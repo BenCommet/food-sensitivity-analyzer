@@ -43,7 +43,7 @@ export default class SignUp extends Component{
 							iconClass={FontAwesomeIcon}
 							iconName={'envelope'}
 							iconColor={'#26A69A'}
-							value = {this.state.username}
+							value = {this.state.email}
 							onChangeText = {email => this.setState({email})}
 							onSubmitEditing={(event) => {
 								this.refs.passwordText.focus();
@@ -145,8 +145,89 @@ function validateEmail(email)
     return re.test(email);
 }
 
-function attemptCreateAccount(_username, _email, _password, _currentPassword, _navigator){
-	if(!validateEmail(_email)){
+function attemptCreateAccount(_username, _email, _password, _confirmPassword, _navigator){
+
+	/*Make sure email is valid*/
+	if(!validateEmail(_email))
+	{
 		Alert.alert("Please input a valid email address");
 	}
+	/*Make sure passwords match*/
+	else if ( _password != _confirmPassword)
+	{
+		Alert.alert("Passwords do not match");
+	}
+	else
+	{
+
+			/*validate email does not already belong to a user*/
+
+			//Data Request---------------------------------
+			var request = new XMLHttpRequest();
+			var response;
+			request.responseType = "";
+			request.onreadystatechange = (e) => {
+			  if (request.readyState !== 4) {
+			    return;
+			  }
+
+			  if (request.status === 200) {
+			    console.log('success', request.responseText);
+
+					//TODO remove this debug line
+				  //Alert.alert("Response received!" + request.responseText);
+
+					response = request.responseText;
+
+					/*Valid new email*/
+					if(request.responseText == 'T')
+					{
+						//TODO move to journal page
+						Alert.alert("Welcome, " + _username + "!");
+					}
+					/*There is already a user with this email*/
+					else if (request.responseText == 'F')
+					{
+						Alert.alert('There is already a user with this email.');
+					}
+					/*An error occurred*/
+					else
+					{
+						Alert.alert('There was an error validating the email. Response:' + request.responseText);
+					}
+
+
+
+
+			  } else {
+			    console.warn('error');
+					//TODO remove this debug line
+				  Alert.alert("Response NOT received!");
+			  }
+			};
+
+
+			var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+			url = url + '?requestType=userSignUp';
+			url = url + '&userName=';
+			url = url + _username;
+			url = url + '&password=';
+			url = url + _password;
+			url = url + '&email=';
+			url = url + _email;
+			//Alert.alert(_email);
+
+
+			request.open('GET', url);
+			request.send();
+			//------------------------------------------------------
+
+
+	}
+
+
+
+
+
+
 }

@@ -49,7 +49,7 @@ export default class Journal extends Component{
 			foodModalVisible: true,
 			selectedItem: undefined,
 			newName: 'recentFoods',
-			date:
+			date: "2016-05-15"
 		};
 	}
 

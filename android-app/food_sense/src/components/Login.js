@@ -11,7 +11,7 @@ export default class Login extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: '',
+			email: '',
 			password: ''
 		};
 	}
@@ -37,8 +37,8 @@ export default class Login extends Component{
 								iconClass={FontAwesomeIcon}
 								iconName={'envelope'}
 								iconColor={'#26A69A'}
-								value = {this.state.username}
-								onChangeText = {username => this.setState({username})}
+								value = {this.state.email}
+								onChangeText = {email => this.setState({email})}
 								onSubmitEditing={(event) => {
 									this.refs.passwordText.focus();
 								}}
@@ -63,7 +63,7 @@ export default class Login extends Component{
 					<View style = {{marginTop: height * .1}}>
 						<Button
 							ref = "loginButton"
-							onPress = {()=>onLoginPress(this.state.username, this.state.password, this.props.navigator)}
+							onPress = {()=>onLoginPress(this.state.email, this.state.password, this.props.navigator)}
 							title = "Login"
 							color = "#26A69A"
 							accessibilityLabel="Login to the Application after entering password"
@@ -104,16 +104,14 @@ const styles = StyleSheet.create({
 });
 
 {/* This handles login button presses*/}
-const onLoginPress = (username, password, _navigator) => {
-	if(!validateEmail(username)){
+const onLoginPress = (email, password, _navigator) => {
+	if(!validateEmail(email)){
 		Alert.alert("Please input a valid email address");
 	}
 	else{
-		if(attemptLogin(username, password)){
-			_navigator.push({
-				id: 'Journal'
-			})
-		}
+
+		attemptLogin(email, password, _navigator);
+
 	}
 };
 
@@ -132,6 +130,69 @@ function validateEmail(email)
 }
 
 {/*TODO Integrate with database to check for valid login*/}
-const attemptLogin = (username, password) => {
+const attemptLogin = (email, password, _navigator) => {
+	/*validate user email/password */
+
+
+	//Data Request---------------------------------
+	var request = new XMLHttpRequest();
+	var response;
+	request.responseType = "";
+	request.onreadystatechange = (e) => {
+		if (request.readyState !== 4) {
+			return;
+		}
+
+		if (request.status === 200) {
+			console.log('success', request.responseText);
+
+
+
+			/*Password is wrong*/
+			if(request.responseText == 'Incorrect Password.')
+			{
+				Alert.alert("Incorrect password.");
+			}
+			/*Email is wrong*/
+			else if (request.responseText == 'No such user.')
+			{
+				Alert.alert('There is no user with this email.');
+			}
+			/**/
+			else if (request.responseText == 'Success.')
+			{
+				//Alert.alert('Success.');
+				_navigator.push({id: 'Journal'})
+			}
+			/*An error occurred*/
+			else
+			{
+				Alert.alert('There was an error attempting to log in. Response:' + request.responseText);
+			}
+
+		}
+		else
+		{
+			console.warn('error');
+			//TODO remove this debug line
+			Alert.alert("Response NOT received!");
+		}
+
+	};
+
+
+	var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+	url = url + '?requestType=userLogin';
+	url = url + '&password=';
+	url = url + password;
+	url = url + '&email=';
+	url = url + email;
+	//Alert.alert(_email);
+
+
+	request.open('GET', url);
+	request.send();
+	//------------------------------------------------------
+
 	return true;
 }

@@ -12,6 +12,8 @@ import DatePicker from 'react-native-datepicker';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
 
+currentDate = getFullDate();
+
 var cardData = [{name: "Chicken Sandwich", isSymptom: false, onsetDate: "Wednesday", onsetTime: '4:00 pm'},
 {name: "Headache", isSymptom: true, onsetDate: "Tuesday", onsetTime: '6:00 am'},
 {name: "Tomato Soup", isSymptom: false, onsetDate: "Tuesday", onsetTime: '1:00 pm'},
@@ -46,8 +48,8 @@ export default class Journal extends Component{
 			symptomModalVisible: false,
 			foodModalVisible: true,
 			selectedItem: undefined,
-			newName: 'recentFoods'
-			this.state = {date:"2016-05-15"}
+			newName: 'recentFoods',
+			date:
 		};
 	}
 
@@ -273,4 +275,21 @@ function makeFoodCard(cardObject, pos){
 		</Card>
 	</View>
 	return card
+}
+
+function getFullDate(){
+	var returnDate = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+
+	if(dd<10) {
+	    dd='0'+dd
+	}
+
+	if(mm<10) {
+	    mm='0'+mm
+	}
+
+	return mm+'/'+dd+'/'+yyyy;
 }

@@ -1,22 +1,3 @@
-<html lang="en">
-
-<head>
-    <title>Food Sensitivity Analyzer DataBase Server</title>
-    <!-- <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script> -->
-</head>
-
-
-<!--PHP Server Page for the Food Sensitivity Analyzer Database.
-     FSA application will  post to this server .
-
-     - Mitch Hickox, Feb 16th 2017
- -->
-
-
-<body>
-
-
-<!-- Database Connection -->
 <?php
 
 
@@ -226,5 +207,3 @@ if($requestType == "userLogin")
 
 
 ?>
-</body>
-</html>

@@ -175,9 +175,30 @@ function attemptCreateAccount(_username, _email, _password, _confirmPassword, _n
 			    console.log('success', request.responseText);
 
 					//TODO remove this debug line
-				  Alert.alert("Response received!");
+				  //Alert.alert("Response received!" + request.responseText);
 
 					response = request.responseText;
+
+					/*Valid new email*/
+					if(request.responseText == 'T')
+					{
+						//TODO move to journal page
+						Alert.alert("Welcome, " + _username + "!");
+					}
+					/*There is already a user with this email*/
+					else if (request.responseText == 'F')
+					{
+						Alert.alert('There is already a user with this email.');
+					}
+					/*An error occurred*/
+					else
+					{
+						Alert.alert('There was an error validating the email. Response:' + request.responseText);
+					}
+
+
+
+
 			  } else {
 			    console.warn('error');
 					//TODO remove this debug line
@@ -194,26 +215,13 @@ function attemptCreateAccount(_username, _email, _password, _confirmPassword, _n
 			url = url + _password;
 			url = url + '&email=';
 			url = url + _email;
+			//Alert.alert(_email);
 
 
 			request.open('GET', url);
 			request.send();
 			//------------------------------------------------------
-			/*Valid new email*/
-			if(response == 'T')
-			{
-				//TODO move to journal page
-			}
-			/*There is already a user with this email*/
-			else if (response == 'F')
-			{
-				Alert.alert('There is already a user with this email.');
-			}
-			/*An error occurred*/
-			else
-			{
-				Alert.alert('There was an error validating the email. Response:' + response);
-			}
+
 
 	}
 

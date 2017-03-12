@@ -6,7 +6,7 @@ import Dimensions from 'Dimensions'
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
 
-
+theEmail = "";
 export default class Login extends Component{
 	constructor(props) {
 		super(props);
@@ -131,6 +131,7 @@ function validateEmail(email)
 
 {/*TODO Integrate with database to check for valid login*/}
 const attemptLogin = (email, password, _navigator) => {
+	theEmail = email;
 	/*validate user email/password */
 
 
@@ -162,7 +163,10 @@ const attemptLogin = (email, password, _navigator) => {
 			else if (request.responseText == 'Success.')
 			{
 				//Alert.alert('Success.');
-				_navigator.push({id: 'Journal'})
+				_navigator.push({
+					id: 'Journal',
+					userEmail: email
+				})
 			}
 			/*An error occurred*/
 			else

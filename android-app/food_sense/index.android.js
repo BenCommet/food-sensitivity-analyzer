@@ -49,7 +49,7 @@ export default class food_sense extends Component {
       case 'SignUp':
         return(<SignUp navigator={navigator} title = "SignUp"/>);
       case 'Journal':
-        return(<Journal navigator={navigator} title = "Journal"/>);
+        return(<Journal navigator={navigator} userEmail = {Journal.userEmail} title = "Journal"/>);
     }
   }
 }

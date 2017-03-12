@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { StyleSheet, View, StatusBar, ScrollView, Modal, TouchableHighlight, Picker} from 'react-native';
+import { StyleSheet, View, StatusBar, ScrollView, Modal, TouchableHighlight, Picker, Alert} from 'react-native';
 import {Container, Content, Header, Title, Button, Subtitle, Left,
 	Right, Body, Card, CardItem, Text, Fab} from 'native-base';
 const Item = Picker.Item;
@@ -40,6 +40,7 @@ for(var i = 0; i < recentSymptoms.length; i++){
 }
 export default class Journal extends Component{
 	constructor(props) {
+		getData(theEmail);
 		super(props);
 		this.state = {
 			username: '',
@@ -63,6 +64,7 @@ export default class Journal extends Component{
     }
 
 	render() {
+
 		return (
 			<View>
 				<View >
@@ -93,7 +95,7 @@ export default class Journal extends Component{
 									/>
 									</Right>
 								</CardItem>
-									<Text style = {{textAlign:'center'}}>Choose from Recent Foods</Text>
+									<Text style = {{textAlign:'center'}}>__{theEmail}__</Text>
 									<Picker
 										mode = "dropdown"
 										iosHeader="Recent Foods"
@@ -278,7 +280,7 @@ function makeFoodCard(cardObject, pos){
 }
 
 function getFullDate(){
-	var returnDate = new Date();
+	var today = new Date();
 	var dd = today.getDate();
 	var mm = today.getMonth()+1; //January is 0!
 	var yyyy = today.getFullYear();
@@ -292,4 +294,56 @@ function getFullDate(){
 	}
 
 	return mm+'/'+dd+'/'+yyyy;
+}
+
+
+
+
+
+
+
+
+function getData(_email){
+
+			/*validate email does not already belong to a user*/
+			//Alert.alert("HERE");
+
+			//Data Request---------------------------------
+			var request = new XMLHttpRequest();
+			var response;
+			request.responseType = "";
+			request.onreadystatechange = (e) => {
+			  if (request.readyState !== 4) {
+			    return;
+			  }
+
+			  if (request.status === 200)
+				{
+			    console.log('success', request.responseText);
+
+					//TODO remove this debug line
+				  Alert.alert(request.responseText);
+					//TODO BEN write stuff here, maybe, idk, this is bs
+					response = request.responseText;
+			  }
+				else
+				{
+			    console.warn('error');
+					//TODO remove this debug line
+				  Alert.alert("Journal Response NOT received!");
+			  }
+			};
+
+
+			var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+			url = url + '?requestType=query';
+			url = url + '&query=';
+			url = url + "SELECT type, fisName, time FROM fsa WHERE email='squid@mail.com' ORDER BY time DESC;";
+
+			request.open('GET', url);
+			request.send();
+			//------------------------------------------------------
+
+
+
 }

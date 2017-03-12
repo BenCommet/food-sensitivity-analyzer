@@ -224,10 +224,4 @@ function attemptCreateAccount(_username, _email, _password, _confirmPassword, _n
 
 
 	}
-
-
-
-
-
-
 }

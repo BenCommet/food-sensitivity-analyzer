@@ -338,7 +338,8 @@ function getData(_email){
 			var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
 			url = url + '?requestType=query';
 			url = url + '&query=';
-			url = url + "SELECT type, fisName, time FROM fsa WHERE email='squid@mail.com' ORDER BY time DESC;";
+
+			url = url + "SELECT type, fisName, time FROM fsa WHERE email='" + theEmail + "'  AND NOT type='' ORDER BY time DESC;";
 
 			request.open('GET', url);
 			request.send();

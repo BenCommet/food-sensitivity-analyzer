@@ -9,25 +9,39 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  StatusBar,
+  Navigator
 } from 'react-native';
+
+import Login from './src/components/Login';
+import SignUp from './src/components/SignUp';
+import Journal from './src/components/Journal';
 
 export default class food_sense extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Navigator
+        initialRoute = {{id: 'Login'}}
+        renderScene = {this.navigatorRenderScene}
+        configureScene = {(route) =>{
+            return Navigator.SceneConfigs.HorizontalSwipeJump;
+
+        }}
+        />
     );
+  }
+
+  navigatorRenderScene(route, navigator){
+    _navigator = navigator;
+    switch(route.id){
+      case 'Login':
+        return(<Login navigator={navigator} title = "Login"/>);
+      case 'SignUp':
+        return(<SignUp navigator={navigator} title = "SignUp"/>);
+      case 'Journal':
+        return(<Journal navigator={navigator} userEmail = {Journal.userEmail} title = "Journal"/>);
+    }
   }
 }
 

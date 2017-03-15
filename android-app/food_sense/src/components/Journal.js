@@ -11,46 +11,47 @@ import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
-
+theEmail = "b@aol.com";
 currentDate = getFullDate();
 
-var cardData = [{name: "Chicken Sandwich", isSymptom: false, onsetDate: "Wednesday", onsetTime: '4:00 pm'},
-{name: "Headache", isSymptom: true, onsetDate: "Tuesday", onsetTime: '6:00 am'},
-{name: "Tomato Soup", isSymptom: false, onsetDate: "Tuesday", onsetTime: '1:00 pm'},
-{name: "McDouble", isSymptom: false, onsetDate: "Monday", onsetTime: '8:00 pm'},
-{name: "Captain Crunch", isSymptom: false, onsetDate: "Sunday", onsetTime: '9:00 am'},
-{name: "Headache", isSymptom: true, onsetDate: "Sunday", onsetTime: '10:00 pm'}];
+// var cardData = [{name: "Chicken Sandwich", isSymptom: false, onsetDate: "Wednesday", onsetTime: '4:00 pm'},
+// {name: "Headache", isSymptom: true, onsetDate: "Tuesday", onsetTime: '6:00 am'},
+// {name: "Tomato Soup", isSymptom: false, onsetDate: "Tuesday", onsetTime: '1:00 pm'},
+// {name: "McDouble", isSymptom: false, onsetDate: "Monday", onsetTime: '8:00 pm'},
+// {name: "Captain Crunch", isSymptom: false, onsetDate: "Sunday", onsetTime: '9:00 am'},
+// {name: "Headache", isSymptom: true, onsetDate: "Sunday", onsetTime: '10:00 pm'}];
 var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];
 var recentSymptomsPicker =[];
-var cards = [];
-for(var i = 0; i < cardData.length; i++){
-	var cardObject = cardData[i];
-	if(cardObject.isSymptom){
-		cards.push(makeSymptomCard(cardObject, i));
-	}
-	else{ cards.push(makeFoodCard(cardObject, i)); }
-}
+// for(var i = 0; i < cardData.length; i++){
+// 	var cardData = cardData[i];
+// 	if(cardObject.isSymptom){
+// 		cards.push(makeSymptomCard(cardObject, i));
+// 	}
+// 	else{ cards.push(makeFoodCard(cardObject, i)); }
+// }
 for(var i = 0; i < recentFoods.length; i++){
 	recentFoodsPicker.push(<Item label={recentFoods[i]} key = {i}/>);
 }
-for(var i = 0; i < recentSymptoms.length; i++){
-	recentSymptomsPicker.push(<Item label={recentSymptoms[i]} key = {i}/>);
-}
+// for(var i = 0; i < recentSymptoms.length; i++){
+// 	recentSymptomsPicker.push(<Item label={recentSymptoms[i]} key = {i}/>);
+// }
 export default class Journal extends Component{
 	constructor(props) {
-		getData(theEmail);
+
 		super(props);
+		getData(theEmail, this)
 		this.state = {
 			username: '',
 			password: '',
 			active: false,
 			symptomModalVisible: false,
-			foodModalVisible: true,
+			foodModalVisible: false,
 			selectedItem: undefined,
 			newName: 'recentFoods',
-			date: "2016-05-15"
+			date: "2016-05-15",
+			cards: []
 		};
 	}
 
@@ -68,12 +69,12 @@ export default class Journal extends Component{
 		return (
 			<View>
 				<View >
-	        <Modal
-	          animationType={"slide"}
-	          transparent={true}
-	          visible={this.state.foodModalVisible}
-	          onRequestClose={() => {alert("Modal has been closed.")}}
-	          >
+			        <Modal
+			          animationType={"slide"}
+			          transparent={true}
+			          visible={this.state.foodModalVisible}
+			          onRequestClose={() => {alert("Modal has been closed.")}}
+			         >
 						<View style = {{height: height * .4}}>
 							<Card>
 								<CardItem header>
@@ -86,13 +87,13 @@ export default class Journal extends Component{
 									</Left>
 									<Text style = {{fontSize: height * .04, textAlign: 'center'}}>New Food Item</Text>
 									<Right>
-									<Icon.Button
-										backgroundColor = "transparent"
-										active name ='times-circle'
-										size = {height * .06}
-										color = "#f44842"
-										onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible})}
-									/>
+										<Icon.Button
+											backgroundColor = "transparent"
+											active name ='times-circle'
+											size = {height * .06}
+											color = "#f44842"
+											onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible})}
+										/>
 									</Right>
 								</CardItem>
 									<Text style = {{textAlign:'center'}}>__{theEmail}__</Text>
@@ -104,36 +105,36 @@ export default class Journal extends Component{
 										{recentFoodsPicker}
 									</Picker>
 									<DatePicker
-						        style={{width: width * .5}}
-						        date={this.state.date}
-						        mode="datetime"
-						        placeholder="select time"
-						        confirmBtnText="Confirm"
-						        cancelBtnText="Cancel"
-						        customStyles={{
-						          dateIcon: {
-						            position: 'absolute',
-						            left: 0,
-						            top: 4,
-						            marginLeft: 0
-						          },
-						          dateInput: {
-						            marginLeft: 36
-						          }
-						          // ... You can check the source to find the other keys.
-						        }}
-						        onDateChange={(date) => {this.setState({date: date})}}
-						      />
+								        style={{width: width * .5}}
+								        date={this.state.date}
+								        mode="datetime"
+								        placeholder="select time"
+								        confirmBtnText="Confirm"
+								        cancelBtnText="Cancel"
+								        customStyles={{
+								          dateIcon: {
+								            position: 'absolute',
+								            left: 0,
+								            top: 4,
+								            marginLeft: 0
+								          },
+								          dateInput: {
+								            marginLeft: 36
+								          }
+								          // ... You can check the source to find the other keys.
+								        }}
+								        onDateChange={(date) => {this.setState({date: date})}}
+								      />
 							</Card>
 						</View>
-	        </Modal>
+			        </Modal>
 
 					<Modal
-	          animationType={"slide"}
-	          transparent={true}
-	          visible={this.state.symptomModalVisible}
-	          onRequestClose={() => {alert("Modal has been closed.")}}
-	          >
+			          animationType={"slide"}
+			          transparent={true}
+			          visible={this.state.symptomModalVisible}
+			          onRequestClose={() => {alert("Modal has been closed.")}}
+			          >
 						<View style = {{height: height * .4}}>
 							<Card>
 								<CardItem header>
@@ -165,40 +166,39 @@ export default class Journal extends Component{
 									</Picker>
 							</Card>
 						</View>
-	        </Modal>
-	      </View>
+			        </Modal>
+			      </View>
 
 				<ScrollView>
-					{cards}
+					{this.state.cards}
 				</ScrollView>
 				<Fab
-            active={this.state.active}
-            direction="up"
-            style={{ backgroundColor: '#26A69A' }}
-            position="bottomRight"
-            onPress={() => this.setState({ active: !this.state.active })}
-        >
-          <Icon name="plus" />
-
+		            active={this.state.active}
+		            direction="up"
+		            style={{ backgroundColor: '#26A69A' }}
+		            position="bottomRight"
+		        	onPress={() => this.setState({ active: !this.state.active })}
+		        >
+			      	<Icon name="plus" />
 					<Button
-					style={{ backgroundColor: '#26A69A' }}
-					onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
-            <Icon
+						style={{ backgroundColor: '#26A69A' }}
+						onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
+				        <Icon
 						 	active name ='apple'
 						 	size = {height * .04}
 							color = "#FFFFFF"
 						/>
-          </Button>
+			      	</Button>
 					<Button
-						style={{ backgroundColor: '#26A69A' }}
-						onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible, active: !this.state.active})}>
-	          <Icon
+					style={{ backgroundColor: '#26A69A' }}
+					onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible, active: !this.state.active})}>
+			      		<Icon
 						 	active name ='heartbeat'
 						 	size = {height * .04}
 							color = "#FFFFFF"
 						/>
-        	</Button>
-        </Fab>
+			    	</Button>
+		        </Fab>
 			</View>
 		);
 	}
@@ -220,7 +220,7 @@ function toggleModal(toggle){
 function closeModule(moduleVisible){
 	moduleVisible = false;
 }
-function makeSymptomCard(cardObject, pos){
+function makeSymptomCard(cardData, pos, context){
 	var card = <View key={pos}>
 		<Card>
 			<CardItem header>
@@ -231,7 +231,7 @@ function makeSymptomCard(cardObject, pos){
 						color = "#f44842"
 					/>
 				</Left>
-				<Text style = {{fontSize: height * .04}}>{cardObject.name}</Text>
+				<Text style = {{fontSize: height * .04}}>{cardData[1]}</Text>
 				<Right>
 					<Icon.Button
 						backgroundColor = "transparent"
@@ -243,14 +243,14 @@ function makeSymptomCard(cardObject, pos){
 			</CardItem>
 			<CardItem>
 				<Left/>
-				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardObject.onsetDate + " " + cardObject.onsetTime}</Text>
+				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardData[2]}</Text>
 			</CardItem>
 		</Card>
 	</View>
 	return card
 }
 
-function makeFoodCard(cardObject, pos){
+function makeFoodCard(cardData, pos, context){
 	var card = <View key={pos}>
 		<Card>
 			<CardItem header>
@@ -261,7 +261,7 @@ function makeFoodCard(cardObject, pos){
 						color = "#f44842"
 					/>
 				</Left>
-				<Text style = {{fontSize: height * .04}}>{cardObject.name}</Text>
+				<Text style = {{fontSize: height * .04}}>{cardData.name}</Text>
 				<Right>
 					<Icon
 						active name ='angle-down'
@@ -272,7 +272,7 @@ function makeFoodCard(cardObject, pos){
 			</CardItem>
 			<CardItem>
 				<Left/>
-				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardObject.onsetDate + " " + cardObject.onsetTime}</Text>
+				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardData.onsetDate + " " + cardData.onsetTime}</Text>
 			</CardItem>
 		</Card>
 	</View>
@@ -296,14 +296,7 @@ function getFullDate(){
 	return mm+'/'+dd+'/'+yyyy;
 }
 
-
-
-
-
-
-
-
-function getData(_email){
+function getData(_email, context){
 
 			/*validate email does not already belong to a user*/
 			//Alert.alert("HERE");
@@ -322,9 +315,22 @@ function getData(_email){
 			    console.log('success', request.responseText);
 
 					//TODO remove this debug line
-				  Alert.alert(request.responseText);
+				//   Alert.alert(request.responseText);
 					//TODO BEN write stuff here, maybe, idk, this is bs
 					response = request.responseText;
+					var journalData = response.split('*');
+					var tempCards = [];
+					//Iterate over  Each symptom and create a card from the data contained within
+					for(var i = 0; i < journalData.length; i++){
+						var cardData = journalData[i].split("+");
+						if(cardData[0] === 'S'){
+							tempCards.push(makeSymptomCard(cardData, i, context));
+						}
+						else{
+							tempCards.push(makeFoodCard(cardData, i, context));
+						}
+					}
+					context.setState({cards: tempCards});
 			  }
 				else
 				{

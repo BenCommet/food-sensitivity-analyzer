@@ -56,7 +56,6 @@ export default class Login extends Component{
 							secureTextEntry = {true}
 							value = {this.state.password}
 							onChangeText = {password => this.setState({password})}
-
 						/>
 					</View>
 

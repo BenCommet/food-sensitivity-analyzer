@@ -11,7 +11,7 @@ import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
-theEmail = "b@aol.com";
+theEmail = "test@test.com";
 currentDate = getFullDate();
 
 // var cardData = [{name: "Chicken Sandwich", isSymptom: false, onsetDate: "Wednesday", onsetTime: '4:00 pm'},
@@ -51,7 +51,9 @@ export default class Journal extends Component{
 			selectedItem: undefined,
 			newName: 'recentFoods',
 			date: "2016-05-15",
-			cards: []
+			cards: [],
+			recentFoodsPicker: [],
+			recentSymptomsPicker: []
 		};
 	}
 
@@ -65,7 +67,6 @@ export default class Journal extends Component{
     }
 
 	render() {
-
 		return (
 			<View>
 				<View >
@@ -102,7 +103,7 @@ export default class Journal extends Component{
 										iosHeader="Recent Foods"
 										selectedValue={this.state.newName}
 										onValueChange={this.onValueChange.bind(this)}>
-										{recentFoodsPicker}
+										{this.state.recentFoodsPicker}
 									</Picker>
 									<DatePicker
 								        style={{width: width * .5}}
@@ -162,7 +163,7 @@ export default class Journal extends Component{
 										iosHeader="Recent Foods"
 										selectedValue={this.state.newName}
 										onValueChange={this.onValueChange.bind(this)}>
-										{recentSymptomsPicker}
+										{this.state.recentFoodsPicker}
 									</Picker>
 							</Card>
 						</View>
@@ -172,14 +173,15 @@ export default class Journal extends Component{
 				<ScrollView>
 					{this.state.cards}
 				</ScrollView>
+
 				<Fab
-		            active={this.state.active}
-		            direction="up"
-		            style={{ backgroundColor: '#26A69A' }}
-		            position="bottomRight"
-		        	onPress={() => this.setState({ active: !this.state.active })}
-		        >
-			      	<Icon name="plus" />
+          active={this.state.active}
+          direction="up"
+          style={{ backgroundColor: '#26A69A' }}
+          position="bottomRight"
+        	onPress={() => this.setState({ active: !this.state.active })}
+        >
+			    <Icon name="plus" />
 					<Button
 						style={{ backgroundColor: '#26A69A' }}
 						onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
@@ -198,7 +200,7 @@ export default class Journal extends Component{
 							color = "#FFFFFF"
 						/>
 			    	</Button>
-		        </Fab>
+      	</Fab>
 			</View>
 		);
 	}
@@ -220,6 +222,10 @@ function toggleModal(toggle){
 function closeModule(moduleVisible){
 	moduleVisible = false;
 }
+/*******************************************************************************
+
+*******************************************************************************/
+
 function makeSymptomCard(cardData, pos, context){
 	var card = <View key={pos}>
 		<Card>
@@ -261,7 +267,7 @@ function makeFoodCard(cardData, pos, context){
 						color = "#f44842"
 					/>
 				</Left>
-				<Text style = {{fontSize: height * .04}}>{cardData.name}</Text>
+				<Text style = {{fontSize: height * .04}}>{cardData[1]}</Text>
 				<Right>
 					<Icon
 						active name ='angle-down'
@@ -272,7 +278,7 @@ function makeFoodCard(cardData, pos, context){
 			</CardItem>
 			<CardItem>
 				<Left/>
-				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardData.onsetDate + " " + cardData.onsetTime}</Text>
+				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardData[2]}</Text>
 			</CardItem>
 		</Card>
 	</View>
@@ -320,17 +326,23 @@ function getData(_email, context){
 					response = request.responseText;
 					var journalData = response.split('*');
 					var tempCards = [];
+					var tempFoodPicker = [];
+					var tempSymptomPicker = [];
 					//Iterate over  Each symptom and create a card from the data contained within
 					for(var i = 0; i < journalData.length; i++){
 						var cardData = journalData[i].split("+");
 						if(cardData[0] === 'S'){
+							tempSymptomPicker.push(<Item label={cardData[1]} key = {i}/>)
 							tempCards.push(makeSymptomCard(cardData, i, context));
 						}
-						else{
+						else if(cardData[0] === 'F'){
+							tempFoodPicker.push(<Item label={cardData[1]} key = {i}/>)
 							tempCards.push(makeFoodCard(cardData, i, context));
 						}
 					}
 					context.setState({cards: tempCards});
+					context.setState({recentFoodsPicker: tempFoodPicker});
+					context.setState({recentSymptomsPicker: tempSymptomPicker})
 			  }
 				else
 				{

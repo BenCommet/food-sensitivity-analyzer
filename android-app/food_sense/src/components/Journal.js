@@ -47,7 +47,7 @@ export default class Journal extends Component{
 			password: '',
 			active: false,
 			symptomModalVisible: false,
-			foodModalVisible: false,
+			foodModalVisible: true,
 			selectedItem: undefined,
 			newName: 'recentFoods',
 			date: "2016-05-15",
@@ -76,8 +76,9 @@ export default class Journal extends Component{
 			          visible={this.state.foodModalVisible}
 			          onRequestClose={() => {alert("Modal has been closed.")}}
 			         >
-						<View style = {{height: height * .4}}>
+						<View style = {{height: height * .5}}>
 							<Card>
+								<ScrollView>
 								<CardItem header>
 									<Left>
 										<Icon
@@ -97,7 +98,7 @@ export default class Journal extends Component{
 										/>
 									</Right>
 								</CardItem>
-									<Text style = {{textAlign:'center'}}>__{theEmail}__</Text>
+									<Text style = {{textAlign:'center'}}>Select from recent foods or add a new item</Text>
 									<Picker
 										mode = "dropdown"
 										iosHeader="Recent Foods"
@@ -105,6 +106,8 @@ export default class Journal extends Component{
 										onValueChange={this.onValueChange.bind(this)}>
 										{this.state.recentFoodsPicker}
 									</Picker>
+
+
 									<DatePicker
 								        style={{width: width * .5}}
 								        date={this.state.date}
@@ -125,7 +128,16 @@ export default class Journal extends Component{
 								          // ... You can check the source to find the other keys.
 								        }}
 								        onDateChange={(date) => {this.setState({date: date})}}
-								      />
+						      />
+									<Button
+										ref = "enterButton"
+										onPress = {()=>newJournalEntry(this.state.email, this.state.password, this.props.navigator)}
+										title = "Create Entry"
+										color = "#26A69A"
+										style = {{width: height * .8}}
+										accessibilityLabel="Create new entry in journal."
+									/>
+									</ScrollView>
 							</Card>
 						</View>
 			        </Modal>
@@ -216,17 +228,22 @@ const styles = StyleSheet.create({
 
 });
 
-function toggleModal(toggle){
-	toggle = !toggle
-}
-function closeModule(moduleVisible){
-	moduleVisible = false;
+/*******************************************************************************
+*
+*******************************************************************************/
+function newJournalEntry(name, isSymptom, date, context){
+
 }
 /*******************************************************************************
-
+* This function creates a food card item
+* @param{array[strings]} cardData - this array holds the string values necessary
+* to create a card, [0] - type of entry, [1] name of entry, [2] date of entry
+* @param{int} pos - position in the list of cards the returned card will take,
+* this value is also used as a key by react
+* @return{card} - A native-base card object
 *******************************************************************************/
 
-function makeSymptomCard(cardData, pos, context){
+function makeSymptomCard(cardData, pos){
 	var card = <View key={pos}>
 		<Card>
 			<CardItem header>
@@ -256,6 +273,14 @@ function makeSymptomCard(cardData, pos, context){
 	return card
 }
 
+/*******************************************************************************
+* This function creates a symptom card item
+* @param{array[strings]} cardData - this array holds the string values necessary
+* to create a card, [0] - type of entry, [1] name of entry, [2] date of entry
+* @param{int} pos - position in the list of cards the returned card will take,
+* this value is also used as a key by react
+* @return{card} - A native-base card object
+*******************************************************************************/
 function makeFoodCard(cardData, pos, context){
 	var card = <View key={pos}>
 		<Card>
@@ -284,7 +309,9 @@ function makeFoodCard(cardData, pos, context){
 	</View>
 	return card
 }
-
+/*******************************************************************************
+*
+*******************************************************************************/
 function getFullDate(){
 	var today = new Date();
 	var dd = today.getDate();
@@ -302,6 +329,9 @@ function getFullDate(){
 	return mm+'/'+dd+'/'+yyyy;
 }
 
+/*******************************************************************************
+*
+*******************************************************************************/
 function getData(_email, context){
 
 			/*validate email does not already belong to a user*/

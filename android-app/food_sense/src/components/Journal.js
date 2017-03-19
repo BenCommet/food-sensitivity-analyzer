@@ -42,6 +42,7 @@ export default class Journal extends Component{
 			foodModalVisible: false,
 			selectedItem: undefined,
 			name: "",
+			allCardData: [],
 			date: currentDate,
 			cards: [],
 			recentFoodsPicker: [],
@@ -358,10 +359,17 @@ function makeFoodCard(cardData, pos, context){
 }
 
 function deleteCard(pos, context){
-	console.log(cont.state.cards.length + ' : ' + pos);
-	cont.state.cards.splice(pos, 1);
-	console.log(cont.state.cards.length);
-	cont.setState(cards: []);
+	var tempCards = context.state.cards;
+	var tempAllCardData = context.state.allCardData;
+	console.log(tempAllCardData[pos]);
+	var delCardData = tempAllCardData[pos];
+	tempCards.splice(pos -1, 1, null);
+	context.setState({cards: tempCards});
+	deleteFromDatabase(theEmail, delCardData[1], delCardData[2]);
+}
+
+function deleteFromDatabase(email, name, time){
+	console.log(name + ' : ' + time);
 }
 /*******************************************************************************
 *
@@ -414,9 +422,11 @@ function getData(_email, context){
 					var tempCards = [];
 					var tempFoodPicker = [];
 					var tempSymptomPicker = [];
-					//Iterate over  Each symptom and create a card from the data contained within
+					var allCardData = [];
+					//Iterate over each symptom and create a card from the data contained within
 					for(var i = 0; i < journalData.length; i++){
 						var cardData = journalData[i].split("+");
+						allCardData.push(cardData);
 						if(cardData[0] === 'S'){
 							tempSymptomPicker.push(<Item label={cardData[1]} key = {i}/>)
 							tempCards.push(makeSymptomCard(cardData, i, context));
@@ -426,6 +436,7 @@ function getData(_email, context){
 							tempCards.push(makeFoodCard(cardData, i, context));
 						}
 					}
+					context.setState({allCardData: allCardData});
 					context.setState({cards: tempCards});
 					context.setState({recentFoodsPicker: tempFoodPicker});
 					context.setState({recentSymptomsPicker: tempSymptomPicker})
@@ -454,7 +465,7 @@ function getData(_email, context){
 }
 //New Entry Send Data---------------------------------------------------------
 function sendData(_email, _itemName, _itemType, _time,  context){
-
+			console.log(_itemType);
 			//Data Request---------------------------------
 			var request = new XMLHttpRequest();
 			var response;
@@ -468,15 +479,15 @@ function sendData(_email, _itemName, _itemType, _time,  context){
 				{
 			    console.log('success', request.responseText);
 					var cardData = [_itemType, _itemName, _time];
-
-					var card = makeSymptomCard(cardData, context.state.cards.length, context);
+					var tempAllCardData = context.state.allCardData;
+					tempAllCardData.splice(0, 0, cardData);
+					if( _itemType === 'S')
+						var card = makeSymptomCard(cardData, context.state.cards.length + 1, context);
+					else if(_itemType === 'F')
+						var card = makeFoodCard(cardData, context.state.cards.length + 1, context);
 					tempCards = context.state.cards;
 					tempCards.splice(0, 0, card);
-					context.setState({cards: tempCards});
-					
-
-
-
+					context.setState({cards: tempCards, name:"", allCardData: tempAllCardData});
 			  }
 				else
 				{

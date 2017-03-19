@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
-import { StyleSheet, View, StatusBar, ScrollView, Modal, TouchableHighlight, Picker, Button, Alert} from 'react-native';
+import { StyleSheet, View, StatusBar, ScrollView, Modal, TouchableHighlight, Picker,
+	TextInput, Button, Alert} from 'react-native';
 import {Container, Content, Header, Title, Subtitle, Left,
 	Right, Body, Card, CardItem, Text, Fab} from 'native-base';
 const Item = Picker.Item;
@@ -11,7 +12,6 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
 theEmail = "test@test.com";
 var currentDate = getFullDate();
-console.log(currentDate);
 var cont;
 
 var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
@@ -37,12 +37,11 @@ export default class Journal extends Component{
 		getData(theEmail, this)
 		this.state = {
 			username: '',
-			password: '',
 			active: false,
 			symptomModalVisible: false,
 			foodModalVisible: false,
 			selectedItem: undefined,
-			name: "fishy",
+			name: "",
 			date: currentDate,
 			cards: [],
 			recentFoodsPicker: [],
@@ -63,7 +62,7 @@ export default class Journal extends Component{
 		cont = this;
 		return (
 			<View>
-				<View >
+				<View>
 			        <Modal
 			          animationType={"slide"}
 			          transparent={true}
@@ -92,17 +91,87 @@ export default class Journal extends Component{
 										/>
 									</Right>
 								</CardItem>
-									<Text style = {{textAlign:'center'}}>Select from recent foods or add a new item</Text>
-									<Picker
+								<TextInput
+					        style={{height: height * .1, padding: width * .02}}
+					        onChangeText={(name) => this.setState({name})}
+					        value={this.state.name}
+									placeholder = "Enter your food's name"
+					      />
+									{/*}<Picker
 										mode = "dropdown"
 										iosHeader="Recent Foods"
 										selectedValue={this.state.name}
 										onValueChange={(foo)=> this.setState({name: foo})}
 									>
 										{this.state.recentFoodsPicker}
-									</Picker>
+									</Picker>*/}
+									<DatePicker
+								        style={{width: width * .45}}
+								        date={this.state.date}
+								        mode="datetime"
+								        placeholder="select time"
+								        confirmBtnText="Confirm"
+								        cancelBtnText="Cancel"
+								        customStyles={{
+								          dateIcon: {
+								            position: 'absolute',
+								            left: 0,
+								            top: 4,
+								            marginLeft: 0
+								          },
+								          dateInput: {
+								            marginLeft: 36
+								          }
+								          // ... You can check the source to find the other keys.
+								        }}
+								        onDateChange={(date) => {this.setState({date: date})}}
+						      />
+							  	<View style = {{marginTop: height * .05}}>
+									<Button
+										onPress = {()=>newJournalEntry(false, this.state.name, this.state.date, this)}
+										title = "Create Entry"
+										color = "#26A69A"
+										accessibilityLabel="Login to the Application after entering password"
+									/>
+								</View>
+									</ScrollView>
+							</Card>
+						</View>
+			        </Modal>
 
-
+					<Modal
+			          animationType={"slide"}
+			          transparent={true}
+			          visible={this.state.symptomModalVisible}
+			          onRequestClose={() => {alert("Modal has been closed.")}}
+			          >
+						<View style = {{height: height * .45}}>
+							<Card>
+								<CardItem header>
+									<Left>
+										<Icon
+											active name ='heartbeat'
+											size = {height * .07}
+											color = "#f44842"
+										/>
+									</Left>
+									<Text style = {{fontSize: height * .04, textAlign: 'center'}}>New Symptom</Text>
+									<Right>
+									<Icon.Button
+										backgroundColor = "transparent"
+										active name ='times-circle'
+										size = {height * .06}
+										color = "#f44842"
+										onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible})}
+									/>
+									</Right>
+								</CardItem>
+									<TextInput
+						        style={{height: height * .1, padding: width * .02}}
+						        onChangeText={(name) => this.setState({name})}
+						        value={this.state.name}
+										placeholder = "Enter your food's name"
+						      />
 									<DatePicker
 								        style={{width: width * .5}}
 								        date={this.state.date}
@@ -126,54 +195,12 @@ export default class Journal extends Component{
 						      />
 							  	<View style = {{marginTop: height * .05}}>
 									<Button
-										ref = "loginButton"
-										onPress = {()=>newJournalEntry(false, this.state.name, this.state.date, this)}
+										onPress = {()=>newJournalEntry(true, this.state.name, this.state.date, this)}
 										title = "Create Entry"
 										color = "#26A69A"
-										accessibilityLabel="Login to the Application after entering password"
+										accessibilityLabel="Add the new journal entry"
 									/>
-								</View>
-
-									</ScrollView>
-							</Card>
-						</View>
-			        </Modal>
-
-					<Modal
-			          animationType={"slide"}
-			          transparent={true}
-			          visible={this.state.symptomModalVisible}
-			          onRequestClose={() => {alert("Modal has been closed.")}}
-			          >
-						<View style = {{height: height * .4}}>
-							<Card>
-								<CardItem header>
-									<Left>
-										<Icon
-											active name ='heartbeat'
-											size = {height * .07}
-											color = "#f44842"
-										/>
-									</Left>
-									<Text style = {{fontSize: height * .04, textAlign: 'center'}}>New Symptom</Text>
-									<Right>
-									<Icon.Button
-										backgroundColor = "transparent"
-										active name ='times-circle'
-										size = {height * .06}
-										color = "#f44842"
-										onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible})}
-									/>
-									</Right>
-								</CardItem>
-									<Text style = {{textAlign:'center'}}>Choose from Recent Foods</Text>
-									<Picker
-										mode = "dropdown"
-										iosHeader="Recent Foods"
-										selectedValue="Recent Foods"
-										onValueChange={this.onValueChange.bind(this)}>
-										{this.state.recentFoodsPicker}
-									</Picker>
+									</View>
 							</Card>
 						</View>
 			        </Modal>
@@ -205,7 +232,7 @@ export default class Journal extends Component{
 					title = ""
 					style={{ backgroundColor: '#26A69A' }}
 					onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible, active: !this.state.active})}>
-			      		<Icon
+	      		<Icon
 						 	active name ='heartbeat'
 						 	size = {height * .04}
 							color = "#FFFFFF"
@@ -231,7 +258,8 @@ const styles = StyleSheet.create({
 *
 *******************************************************************************/
 function newJournalEntry(isSymptom, name, date, context){
-	console.log("hiiiiii" + context.state.date);
+
+	console.log(context.state.name);
 
 	if(isSymptom){
 		context.setState({symptomModalVisible: false});
@@ -316,7 +344,7 @@ function makeFoodCard(cardData, pos, context){
 					onPress = {()=>deleteCard(pos, context)}
 					title = "Delete Card"
 					color = "#26A69A"
-					accessibilityLabel="Login to the Application after entering password"
+					accessibilityLabel="Add the new journal entry"
 				/>
 			</CardItem>
 		</Card>

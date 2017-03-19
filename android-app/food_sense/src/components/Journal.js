@@ -1,25 +1,19 @@
 import React, { Component} from 'react';
-import { StyleSheet, View, StatusBar, ScrollView, Modal, TouchableHighlight, Picker, Alert} from 'react-native';
-import {Container, Content, Header, Title, Button, Subtitle, Left,
+import { StyleSheet, View, StatusBar, ScrollView, Modal, TouchableHighlight, Picker, Button, Alert} from 'react-native';
+import {Container, Content, Header, Title, Subtitle, Left,
 	Right, Body, Card, CardItem, Text, Fab} from 'native-base';
 const Item = Picker.Item;
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions';
-
-
 import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
 theEmail = "test@test.com";
-currentDate = getFullDate();
+var currentDate = getFullDate();
+console.log(currentDate);
+var cont;
 
-// var cardData = [{name: "Chicken Sandwich", isSymptom: false, onsetDate: "Wednesday", onsetTime: '4:00 pm'},
-// {name: "Headache", isSymptom: true, onsetDate: "Tuesday", onsetTime: '6:00 am'},
-// {name: "Tomato Soup", isSymptom: false, onsetDate: "Tuesday", onsetTime: '1:00 pm'},
-// {name: "McDouble", isSymptom: false, onsetDate: "Monday", onsetTime: '8:00 pm'},
-// {name: "Captain Crunch", isSymptom: false, onsetDate: "Sunday", onsetTime: '9:00 am'},
-// {name: "Headache", isSymptom: true, onsetDate: "Sunday", onsetTime: '10:00 pm'}];
 var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];
@@ -39,7 +33,6 @@ for(var i = 0; i < recentFoods.length; i++){
 // }
 export default class Journal extends Component{
 	constructor(props) {
-
 		super(props);
 		getData(theEmail, this)
 		this.state = {
@@ -47,10 +40,10 @@ export default class Journal extends Component{
 			password: '',
 			active: false,
 			symptomModalVisible: false,
-			foodModalVisible: true,
+			foodModalVisible: false,
 			selectedItem: undefined,
-			newName: 'recentFoods',
-			date: "2016-05-15",
+			name: "fishy",
+			date: currentDate,
 			cards: [],
 			recentFoodsPicker: [],
 			recentSymptomsPicker: []
@@ -67,6 +60,7 @@ export default class Journal extends Component{
     }
 
 	render() {
+		cont = this;
 		return (
 			<View>
 				<View >
@@ -102,8 +96,9 @@ export default class Journal extends Component{
 									<Picker
 										mode = "dropdown"
 										iosHeader="Recent Foods"
-										selectedValue={this.state.newName}
-										onValueChange={this.onValueChange.bind(this)}>
+										selectedValue={this.state.name}
+										onValueChange={(foo)=> this.setState({name: foo})}
+									>
 										{this.state.recentFoodsPicker}
 									</Picker>
 
@@ -129,14 +124,16 @@ export default class Journal extends Component{
 								        }}
 								        onDateChange={(date) => {this.setState({date: date})}}
 						      />
+							  	<View style = {{marginTop: height * .05}}>
 									<Button
-										ref = "enterButton"
-										onPress = {()=>newJournalEntry(this.state.email, this.state.password, this.props.navigator)}
+										ref = "loginButton"
+										onPress = {()=>newJournalEntry(false, this.state.name, this.state.date, this)}
 										title = "Create Entry"
 										color = "#26A69A"
-										style = {{width: height * .8}}
-										accessibilityLabel="Create new entry in journal."
+										accessibilityLabel="Login to the Application after entering password"
 									/>
+								</View>
+
 									</ScrollView>
 							</Card>
 						</View>
@@ -173,7 +170,7 @@ export default class Journal extends Component{
 									<Picker
 										mode = "dropdown"
 										iosHeader="Recent Foods"
-										selectedValue={this.state.newName}
+										selectedValue="Recent Foods"
 										onValueChange={this.onValueChange.bind(this)}>
 										{this.state.recentFoodsPicker}
 									</Picker>
@@ -195,6 +192,7 @@ export default class Journal extends Component{
         >
 			    <Icon name="plus" />
 					<Button
+						title = ""
 						style={{ backgroundColor: '#26A69A' }}
 						onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
 				        <Icon
@@ -204,6 +202,7 @@ export default class Journal extends Component{
 						/>
 			      	</Button>
 					<Button
+					title = ""
 					style={{ backgroundColor: '#26A69A' }}
 					onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible, active: !this.state.active})}>
 			      		<Icon
@@ -231,8 +230,15 @@ const styles = StyleSheet.create({
 /*******************************************************************************
 *
 *******************************************************************************/
-function newJournalEntry(name, isSymptom, date, context){
+function newJournalEntry(isSymptom, name, date, context){
+	console.log("hiiiiii" + context.state.date);
 
+	if(isSymptom){
+		context.setState({symptomModalVisible: false});
+	}
+	else{
+		context.setState({foodModalVisible: false});
+	}
 }
 /*******************************************************************************
 * This function creates a food card item
@@ -305,9 +311,24 @@ function makeFoodCard(cardData, pos, context){
 				<Left/>
 				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardData[2]}</Text>
 			</CardItem>
+			<CardItem>
+				<Button
+					onPress = {()=>deleteCard(pos, context)}
+					title = "Delete Card"
+					color = "#26A69A"
+					accessibilityLabel="Login to the Application after entering password"
+				/>
+			</CardItem>
 		</Card>
 	</View>
 	return card
+}
+
+function deleteCard(pos, context){
+	console.log(cont.state.cards.length + ' : ' + pos);
+	cont.state.cards.splice(pos, 1);
+	console.log(cont.state.cards.length);
+	cont.setState(cards: []);
 }
 /*******************************************************************************
 *
@@ -317,6 +338,8 @@ function getFullDate(){
 	var dd = today.getDate();
 	var mm = today.getMonth()+1; //January is 0!
 	var yyyy = today.getFullYear();
+	var h = today.getHours();
+	var m = today.getMinutes();
 
 	if(dd<10) {
 	    dd='0'+dd
@@ -326,7 +349,7 @@ function getFullDate(){
 	    mm='0'+mm
 	}
 
-	return mm+'/'+dd+'/'+yyyy;
+	return yyyy + '-' + mm + '-' + dd + " " + h + ":" + m;
 }
 
 /*******************************************************************************

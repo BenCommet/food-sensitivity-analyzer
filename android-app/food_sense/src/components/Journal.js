@@ -259,13 +259,18 @@ const styles = StyleSheet.create({
 *******************************************************************************/
 function newJournalEntry(isSymptom, name, date, context){
 
+
+
+
 	console.log(context.state.name);
 
 	if(isSymptom){
 		context.setState({symptomModalVisible: false});
+		sendData(theEmail, name, "S", date, context);
 	}
 	else{
 		context.setState({foodModalVisible: false});
+		sendData(theEmail, name, "F", date, context);
 	}
 }
 /*******************************************************************************
@@ -447,3 +452,57 @@ function getData(_email, context){
 
 
 }
+//New Entry Send Data---------------------------------------------------------
+function sendData(_email, _itemName, _itemType, _time,  context){
+
+			//Data Request---------------------------------
+			var request = new XMLHttpRequest();
+			var response;
+			request.responseType = "";
+			request.onreadystatechange = (e) => {
+			  if (request.readyState !== 4) {
+			    return;
+			  }
+
+			  if (request.status === 200)
+				{
+			    console.log('success', request.responseText);
+
+					//TODO remove this debug line
+				  Alert.alert(request.responseText);
+
+			  }
+				else
+				{
+			    console.warn('error');
+					//TODO remove this debug line
+				  Alert.alert("Journal Response NOT received!");
+			  }
+			};
+
+
+			var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+			url = url + '?requestType=insert';
+
+			url = url + '&email=';
+			url = url + _email;
+
+			url = url + '&itemType=';
+			url = url + _itemType;
+
+			url = url + '&itemName=';
+			url = url + _itemName;
+
+			url = url + '&time=';
+			url = url + _time;
+
+
+
+			request.open('GET', url);
+			request.send();
+			//------------------------------------------------------
+
+
+
+}
+//---------------------------------------------------------------------------

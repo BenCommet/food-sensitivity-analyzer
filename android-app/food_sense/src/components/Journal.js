@@ -467,16 +467,22 @@ function sendData(_email, _itemName, _itemType, _time,  context){
 			  if (request.status === 200)
 				{
 			    console.log('success', request.responseText);
+					var cardData = [_itemType, _itemName, _time];
 
-					//TODO remove this debug line
-				  Alert.alert(request.responseText);
+					var card = makeSymptomCard(cardData, context.state.cards.length, context);
+					tempCards = context.state.cards;
+					tempCards.splice(0, 0, card);
+					context.setState({cards: tempCards});
+					
+
+
 
 			  }
 				else
 				{
 			    console.warn('error');
 					//TODO remove this debug line
-				  Alert.alert("Journal Response NOT received!");
+				  Alert.alert("Error communicating with server, try again later");
 			  }
 			};
 

@@ -51,7 +51,7 @@ if($requestType == "delete")
 
     try
     {
-        $db->exec("DELETE FROM fsa WHERE email='$email' AND fisName='itemName' AND time='$time';");
+        $db->exec("DELETE FROM fsa WHERE email='$email' AND fisName='$itemName' AND time='$time';");
         echo "T";
     }
     catch(Exception $e)

@@ -379,7 +379,7 @@ function deleteCard(pos, context){
 function deleteFromDatabase(email, name, time, context){
 	console.log(name + ' : ' + time);
 
-	console.log(_itemType);
+
 	//Data Request---------------------------------
 	var request = new XMLHttpRequest();
 	var response;
@@ -392,7 +392,7 @@ function deleteFromDatabase(email, name, time, context){
 		if (request.status === 200)
 		{
 			console.log('success', request.responseText);
-			Alert.alert(request.responseText);
+			//Alert.alert(request.responseText);
 		}
 		else
 		{
@@ -407,13 +407,13 @@ function deleteFromDatabase(email, name, time, context){
 	url = url + '?requestType=delete';
 
 	url = url + '&email=';
-	url = url + _email;
+	url = url + email;
 
 	url = url + '&itemName=';
-	url = url + _itemName;
+	url = url + name;
 
 	url = url + '&time=';
-	url = url + _time;
+	url = url + time;
 
 
 

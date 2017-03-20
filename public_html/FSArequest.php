@@ -29,7 +29,6 @@ try {
 $requestType = $_GET['requestType'];
 
 $query = $_GET['query'];
-$exec = $_GET['exec'];
 
 
 //DB Data
@@ -46,13 +45,13 @@ $description     = $_GET['desc'];
 
 
 
-//Exec
-if($requestType == "exec")
+//Delete
+if($requestType == "delete")
 {
 
     try
     {
-        $db->exec($exec);
+        $db->exec("DELETE FROM fsa WHERE email='$email' AND fisName='itemName' AND time='$time';");
         echo "T";
     }
     catch(Exception $e)

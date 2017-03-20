@@ -365,11 +365,62 @@ function deleteCard(pos, context){
 	var delCardData = tempAllCardData[pos];
 	tempCards.splice(pos -1, 1, null);
 	context.setState({cards: tempCards});
-	deleteFromDatabase(theEmail, delCardData[1], delCardData[2]);
+	deleteFromDatabase(theEmail, delCardData[1], delCardData[2], context);
 }
 
-function deleteFromDatabase(email, name, time){
+
+
+
+
+
+
+
+
+function deleteFromDatabase(email, name, time, context){
 	console.log(name + ' : ' + time);
+
+	console.log(_itemType);
+	//Data Request---------------------------------
+	var request = new XMLHttpRequest();
+	var response;
+	request.responseType = "";
+	request.onreadystatechange = (e) => {
+		if (request.readyState !== 4) {
+			return;
+		}
+
+		if (request.status === 200)
+		{
+			console.log('success', request.responseText);
+			Alert.alert(request.responseText);
+		}
+		else
+		{
+			console.warn('error');
+			//TODO remove this debug line
+			Alert.alert("Error communicating with server, try again later");
+		}
+	};
+
+
+	var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+	url = url + '?requestType=delete';
+
+	url = url + '&email=';
+	url = url + _email;
+
+	url = url + '&itemName=';
+	url = url + _itemName;
+
+	url = url + '&time=';
+	url = url + _time;
+
+
+
+	request.open('GET', url);
+	request.send();
+	//------------------------------------------------------
+
 }
 /*******************************************************************************
 *

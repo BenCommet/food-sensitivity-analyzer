@@ -10,7 +10,7 @@ import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
-theEmail = "test@test.com";
+//DEBUG LINE : theEmail = "test@test.com";
 var currentDate = getFullDate();
 var cont;
 var startLength;
@@ -76,7 +76,7 @@ export default class Journal extends Component{
 								<CardItem header>
 									<Left>
 										<Icon
-											active name ='apple'
+											active name ='cutlery'
 											size = {height * .07}
 											color = "#f44842"
 										/>
@@ -224,7 +224,7 @@ export default class Journal extends Component{
 						style={{ backgroundColor: '#26A69A' }}
 						onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
 				        <Icon
-						 	active name ='apple'
+						 	active name ='cutlery'
 						 	size = {height * .04}
 							color = "#FFFFFF"
 						/>
@@ -335,8 +335,8 @@ function makeFoodCard(cardData, pos, context){
 			<CardItem header>
 				<Left>
 					<Icon
-					 	active name ='apple'
-					 	size = {height * .07}
+					 	active name ='cutlery'
+					 	size = {height * .06}
 						color = "#f44842"
 					/>
 				</Left>

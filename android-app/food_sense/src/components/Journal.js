@@ -10,10 +10,14 @@ import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
-theEmail = "test@test.com";
+//DEBUG LINE : theEmail = "test@test.com";
 var currentDate = getFullDate();
 var cont;
+<<<<<<< HEAD
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+=======
+var startLength;
+>>>>>>> d293633e04c93369d93d606a5c3a1ad949b7f0b2
 var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];
@@ -76,7 +80,7 @@ export default class Journal extends Component{
 								<CardItem header>
 									<Left>
 										<Icon
-											active name ='apple'
+											active name ='cutlery'
 											size = {height * .07}
 											color = "#f44842"
 										/>
@@ -224,7 +228,7 @@ export default class Journal extends Component{
 						style={{ backgroundColor: '#26A69A' }}
 						onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
 				        <Icon
-						 	active name ='apple'
+						 	active name ='cutlery'
 						 	size = {height * .04}
 							color = "#FFFFFF"
 						/>
@@ -349,8 +353,8 @@ function makeFoodCard(cardData, pos, context){
 			<CardItem header>
 				<Left>
 					<Icon
-					 	active name ='apple'
-					 	size = {height * .07}
+					 	active name ='cutlery'
+					 	size = {height * .06}
 						color = "#f44842"
 					/>
 				</Left>
@@ -382,12 +386,20 @@ function makeFoodCard(cardData, pos, context){
 }
 
 function deleteCard(pos, context){
+	var arrPosition = pos;
+	var currentLength = context.state.cards.length;
+	if(pos >= startLength){
+		arrPosition =  (currentLength - pos)
+	}
 	var tempCards = context.state.cards;
 	var tempAllCardData = context.state.allCardData;
-	console.log(tempAllCardData[pos]);
-	var delCardData = tempAllCardData[pos];
-	tempCards.splice(pos -1, 1, null);
+	console.log(tempAllCardData[arrPosition]);
+	console.log(arrPosition)
+	var delCardData = tempAllCardData[arrPosition];
+	tempCards.splice(arrPosition, 1);
+	tempAllCardData.splice(arrPosition, 1);
 	context.setState({cards: tempCards});
+	context.setState({allCardData: tempAllCardData});
 	deleteFromDatabase(theEmail, delCardData[1], delCardData[2], context);
 }
 
@@ -490,6 +502,7 @@ function getData(_email, context){
 					var tempFoodPicker = [];
 					var tempSymptomPicker = [];
 					var allCardData = [];
+					journalData.splice(0, 1);
 					//Iterate over each symptom and create a card from the data contained within
 					for(var i = 0; i < journalData.length; i++){
 						var cardData = journalData[i].split("+");
@@ -503,6 +516,7 @@ function getData(_email, context){
 							tempCards.push(makeFoodCard(cardData, i, context));
 						}
 					}
+					startLength = tempCards.length;
 					context.setState({allCardData: allCardData});
 					context.setState({cards: tempCards});
 					context.setState({recentFoodsPicker: tempFoodPicker});

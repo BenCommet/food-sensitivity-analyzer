@@ -13,11 +13,8 @@ const width = Dimensions.get('window').height;
 //DEBUG LINE : theEmail = "test@test.com";
 var currentDate = getFullDate();
 var cont;
-<<<<<<< HEAD
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-=======
 var startLength;
->>>>>>> d293633e04c93369d93d606a5c3a1ad949b7f0b2
 var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];

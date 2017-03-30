@@ -13,7 +13,7 @@ const width = Dimensions.get('window').height;
 theEmail = "test@test.com";
 var currentDate = getFullDate();
 var cont;
-
+var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];
@@ -315,6 +315,20 @@ function makeSymptomCard(cardData, pos, context){
 			<CardItem>
 				<Left/>
 				<Text style = {{fontSize: height * .03}}>{"Onset: " + cardData[2]}</Text>
+			</CardItem>
+			<CardItem>
+				<Right>
+					<Button
+						title = "Analyze"
+						style={{ backgroundColor: '#26A69A' }}
+						onPress={() => >
+						<Icon
+							active name ='apple'
+							size = {height * .04}
+							color = "#f44842"
+						/>
+					</Button>
+				</Right>
 			</CardItem>
 		</Card>
 	</View>

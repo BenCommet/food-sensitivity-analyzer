@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -75,7 +74,6 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('food_sense', () => food_sense);
-=======
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -152,4 +150,3 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('food_sense', () => food_sense);
->>>>>>> 21820b2e1567b55b84a8f0af4d5aa5d150ffad05

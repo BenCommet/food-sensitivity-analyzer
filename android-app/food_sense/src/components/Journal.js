@@ -10,14 +10,11 @@ import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
-//DEBUG LINE : theEmail = "test@test.com";
+theEmail = "test@test.com";
 var currentDate = getFullDate();
 var cont;
-<<<<<<< HEAD
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-=======
 var startLength;
->>>>>>> d293633e04c93369d93d606a5c3a1ad949b7f0b2
 var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];
@@ -322,16 +319,11 @@ function makeSymptomCard(cardData, pos, context){
 			</CardItem>
 			<CardItem>
 				<Right>
-					<Button
-						title = "Analyze"
-						style={{ backgroundColor: '#26A69A' }}
-						onPress={() => >
-						<Icon
-							active name ='apple'
-							size = {height * .04}
-							color = "#f44842"
-						/>
-					</Button>
+				<Button
+					title = "Analyze"
+					style={{ backgroundColor: '#26A69A' }}
+					onPress={() => analyzeSymptom(cardData)}>
+				</Button>
 				</Right>
 			</CardItem>
 		</Card>
@@ -383,6 +375,10 @@ function makeFoodCard(cardData, pos, context){
 		</Card>
 	</View>
 	return card
+}
+
+function analyzeSymptom(cardData){
+	
 }
 
 function deleteCard(pos, context){

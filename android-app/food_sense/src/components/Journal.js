@@ -378,6 +378,10 @@ function makeFoodCard(cardData, pos, context){
 	return card
 }
 
+/*******************************************************************************
+* @param{array[strings]} cardData - this array holds the string values necessary
+* to create a card, [0] - type of entry, [1] name of entry, [2] date of entry
+*******************************************************************************/
 function analyzeSymptom(cardData){
 
 }

@@ -18,6 +18,7 @@ import {
 import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
 import Journal from './src/components/Journal';
+import AnalyzeSymptom from './src/components/AnalyzeSymptom';
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
   if (_navigator.getCurrentRoutes().length === 1  ) {
@@ -31,7 +32,7 @@ export default class food_sense extends Component {
   render() {
     return (
       <Navigator
-        initialRoute = {{id: 'Login'}}
+        initialRoute = {{id: 'AnalyzeSymptom'}}
         renderScene = {this.navigatorRenderScene}
         configureScene = {(route) =>{
             return Navigator.SceneConfigs.HorizontalSwipeJump;
@@ -50,6 +51,8 @@ export default class food_sense extends Component {
         return(<SignUp navigator={navigator} title = "SignUp"/>);
       case 'Journal':
         return(<Journal navigator={navigator} userEmail = {Journal.userEmail} title = "Journal"/>);
+      case 'AnalyzeSymptom':
+        return(<AnalyzeSymptom navigator={navigator} title = "AnalyzeSymptom"/>);
     }
   }
 }

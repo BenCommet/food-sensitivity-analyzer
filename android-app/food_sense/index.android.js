@@ -32,7 +32,7 @@ export default class food_sense extends Component {
   render() {
     return (
       <Navigator
-        initialRoute = {{id: 'Login'}}
+        initialRoute = {{id: 'Journal'}}
         renderScene = {this.navigatorRenderScene}
         configureScene = {(route) =>{
             return Navigator.SceneConfigs.HorizontalSwipeJump;

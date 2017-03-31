@@ -378,105 +378,47 @@ function makeFoodCard(cardData, pos, context){
 	return card
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function analyzeSymptom(cardData){
-				//Data Request---------------------------------
+	//Data Request---------------------------------
+	var fish = new XMLHttpRequest();
+	var response;
+	fish.responseType = "";
+	fish.onreadystatechange = (e) => {
+	if (fish.readyState !== 4) {
+		return;
+	}
+
+	  if (fish.status === 200)
+		{
+	    console.log('success', fish.responseText);
+
+			response = fish.responseText;
+			//TODO put this inner query in loop that iterates over the times received
+			//SECOND QUERY (INNER QUERY)=======================================
+			response = response.substring(0, response.length -2);
+			var splitResponse = response.split('+')
+			for(var i = 0; i < splitResponse.length, i++){
 				var request = new XMLHttpRequest();
 				var response;
 				request.responseType = "";
 				request.onreadystatechange = (e) => {
-				  if (request.readyState !== 4) {
-				    return;
-				  }
+					if (request.readyState !== 4) {
+						return;
+					}
 
-				  if (request.status === 200)
+					if (request.status === 200)
 					{
-				    console.log('success', request.responseText);
+						// console.log('success', request.responseText);
 
 						response = request.responseText;
 						Alert.alert(response);
-
-						//TODO put this inner query in loop that iterates over the times received
-						//SECOND QUERY (INNER QUERY)=======================================
-						var request = new XMLHttpRequest();
-						var response;
-						request.responseType = "";
-						request.onreadystatechange = (e) => {
-							if (request.readyState !== 4) {
-								return;
-							}
-
-							if (request.status === 200)
-							{
-								console.log('success', request.responseText);
-
-								response = request.responseText;
-								Alert.alert(response);
-							}
-							else
-							{
-								console.warn('error');
-								//TODO remove this debug line
-								Alert.alert("Symptom times Response NOT received!");
-							}
-						};
-
-
-						var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
-						url = url + '?requestType=query';
-						url = url + '&query=';
-
-						url = url + "SELECT time FROM fsa WHERE email='" + theEmail + "'  AND fisName='"+cardData[1]+"' ORDER BY time DESC;";
-
-						request.open('GET', url);
-						request.send();
-						//=============================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				  }
+					}
 					else
 					{
-				    console.warn('error');
+						console.warn('error');
 						//TODO remove this debug line
-					  Alert.alert("Symptom times Response NOT received!");
-				  }
+						Alert.alert("Symptom times Response NOT received!");
+					}
 				};
 
 
@@ -488,30 +430,30 @@ function analyzeSymptom(cardData){
 
 				request.open('GET', url);
 				request.send();
-				//------------------------------------------------------
+				//=============================================================
+			}
+
+	  }
+		else
+		{
+	    console.warn('error');
+			//TODO remove this debug line
+		  Alert.alert("Symptom times Response NOT received!");
+	  }
+	};
 
 
+	var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+	url = url + '?requestType=query';
+	url = url + '&query=';
 
+	url = url + "SELECT time FROM fsa WHERE email='" + theEmail + "'  AND fisName='"+cardData[1]+"' ORDER BY time DESC;";
 
-
+	fish.open('GET', url);
+	fish.send();
+	//------------------------------------------------------
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function deleteCard(pos, context){

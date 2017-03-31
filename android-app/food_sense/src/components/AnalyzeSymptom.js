@@ -2,11 +2,14 @@
 import React, { Component} from 'react';
 import { ScrollView, Modal, TouchableHighlight, Picker,
 	TextInput, Button, Alert} from 'react-native';
+
+
 export default class AnalyzeSymptom extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
-			hours: 0
+			hours: 0,
+			foodData: [["squirrel", 5], ["chicken", 4], ["popTarts", 15], ["snickers", 2]]
 		};
 	}
 	render() {

@@ -388,6 +388,9 @@ function analyzeSymptom(cardData){
 	//reset  this so we know when we got all of the chart data
 	gotChartData = 0;
 
+	var time_diff = 8;
+
+
 
 	//Data Request---------------------------------
 	var fish = new XMLHttpRequest();
@@ -410,11 +413,8 @@ function analyzeSymptom(cardData){
 			while(chartFoodCount < splitResponse.length){
 
 
-				chartFoodCount += 1;
-				if(chartFoodCount == splitResponse.length - 1)
-				{
-					Alert.alert("Here" + chartFoodCount);
-				}
+			//Alert.alert("Here" + chartFoodCount);
+			console.log("Here" + chartFoodCount);
 
 
 
@@ -436,7 +436,7 @@ function analyzeSymptom(cardData){
 
 
 						//Now we know that all of the data for the chart has been retrieved
-						if(i == splitResponse.length - 1)
+						if(chartFoodCount == splitResponse.length - 1)
 						{
 
 
@@ -458,13 +458,17 @@ function analyzeSymptom(cardData){
 
 
 				//TODO change so time is less than splitResponse[i]  - time difference
-				url = url + "SELECT fisName FROM fsa WHERE email='" + theEmail + "'  AND type='F' AND time < '"+ splitResponse[i] +"' ORDER BY time DESC;";
+				var inScope = splitResponse[chartFoodCount]
+				url = url + "SELECT fisName FROM fsa WHERE email='" + theEmail + "'  AND type='F' AND time < '"+ inScope +"' AND  time >=  ('" + ( inScope - time_diff) +"');";
+
+
 
 
 
 				request.open('GET', url);
 				request.send();
 				//=============================================================
+				chartFoodCount += 1;
 			}
 
 	  }

@@ -408,7 +408,68 @@ function analyzeSymptom(cardData){
 				    console.log('success', request.responseText);
 
 						response = request.responseText;
-						Alert.alert("Success Symptom times Response received!");
+						Alert.alert(response);
+
+						//TODO put this inner query in loop that iterates over the times received
+						//SECOND QUERY (INNER QUERY)=======================================
+						var request = new XMLHttpRequest();
+						var response;
+						request.responseType = "";
+						request.onreadystatechange = (e) => {
+							if (request.readyState !== 4) {
+								return;
+							}
+
+							if (request.status === 200)
+							{
+								console.log('success', request.responseText);
+
+								response = request.responseText;
+								Alert.alert(response);
+							}
+							else
+							{
+								console.warn('error');
+								//TODO remove this debug line
+								Alert.alert("Symptom times Response NOT received!");
+							}
+						};
+
+
+						var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+						url = url + '?requestType=query';
+						url = url + '&query=';
+
+						url = url + "SELECT time FROM fsa WHERE email='" + theEmail + "'  AND fisName='"+cardData[1]+"' ORDER BY time DESC;";
+
+						request.open('GET', url);
+						request.send();
+						//=============================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				  }
 					else
 					{

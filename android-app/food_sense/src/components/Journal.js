@@ -15,6 +15,8 @@ theEmail = "test@test.com";
 
 var gotChartData = 0;
 
+var chartFoodCount = 0;
+
 var currentDate = getFullDate();
 var cont;
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -405,7 +407,18 @@ function analyzeSymptom(cardData){
 			//SECOND QUERY (INNER QUERIES)=======================================
 			response = response.substring(0, response.length -2);
 			var splitResponse = response.split('+')
-			for(var i = 0; i < splitResponse.length, i++){
+			while(chartFoodCount < splitResponse.length){
+
+
+				chartFoodCount += 1;
+				if(chartFoodCount == splitResponse.length - 1)
+				{
+					Alert.alert("Here" + chartFoodCount);
+				}
+
+
+
+
 				var request = new XMLHttpRequest();
 				var response;
 				request.responseType = "";
@@ -419,13 +432,14 @@ function analyzeSymptom(cardData){
 						// console.log('success', request.responseText);
 
 						response = request.responseText;
-						Alert.alert(response);
 
 
 
 						//Now we know that all of the data for the chart has been retrieved
 						if(i == splitResponse.length - 1)
 						{
+
+
 							gotChartData = 1;
 						}
 					}
@@ -442,6 +456,8 @@ function analyzeSymptom(cardData){
 				url = url + '?requestType=query';
 				url = url + '&query=';
 
+
+				//TODO change so time is less than splitResponse[i]  - time difference
 				url = url + "SELECT fisName FROM fsa WHERE email='" + theEmail + "'  AND type='F' AND time < '"+ splitResponse[i] +"' ORDER BY time DESC;";
 
 

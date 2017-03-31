@@ -423,7 +423,7 @@ function analyzeSymptom(cardData){
 				url = url + '?requestType=query';
 				url = url + '&query=';
 
-				url = url + "SELECT time FROM fsa WHERE email='" + theEmail + "'  AND NOT type='' ORDER BY time DESC;";
+				url = url + "SELECT time FROM fsa WHERE email='" + theEmail + "'  AND fisName='"+cardData[1]+"' ORDER BY time DESC;";
 
 				request.open('GET', url);
 				request.send();

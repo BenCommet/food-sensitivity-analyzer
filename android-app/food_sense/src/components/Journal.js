@@ -12,6 +12,9 @@ import DatePicker from 'react-native-datepicker';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
 theEmail = "test@test.com";
+
+var gotChartData = 0;
+
 var currentDate = getFullDate();
 var cont;
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -379,6 +382,11 @@ function makeFoodCard(cardData, pos, context){
 }
 
 function analyzeSymptom(cardData){
+
+	//reset  this so we know when we got all of the chart data
+	gotChartData = 0;
+
+
 	//Data Request---------------------------------
 	var fish = new XMLHttpRequest();
 	var response;
@@ -393,8 +401,8 @@ function analyzeSymptom(cardData){
 	    console.log('success', fish.responseText);
 
 			response = fish.responseText;
-			//TODO put this inner query in loop that iterates over the times received
-			//SECOND QUERY (INNER QUERY)=======================================
+			//inner query in loop that iterates over the times received
+			//SECOND QUERY (INNER QUERIES)=======================================
 			response = response.substring(0, response.length -2);
 			var splitResponse = response.split('+')
 			for(var i = 0; i < splitResponse.length, i++){
@@ -412,6 +420,14 @@ function analyzeSymptom(cardData){
 
 						response = request.responseText;
 						Alert.alert(response);
+
+
+
+						//Now we know that all of the data for the chart has been retrieved
+						if(i == splitResponse.length - 1)
+						{
+							gotChartData = 1;
+						}
 					}
 					else
 					{
@@ -426,7 +442,9 @@ function analyzeSymptom(cardData){
 				url = url + '?requestType=query';
 				url = url + '&query=';
 
-				url = url + "SELECT time FROM fsa WHERE email='" + theEmail + "'  AND fisName='"+cardData[1]+"' ORDER BY time DESC;";
+				url = url + "SELECT fisName FROM fsa WHERE email='" + theEmail + "'  AND type='F' AND time < '"+ splitResponse[i] +"' ORDER BY time DESC;";
+
+
 
 				request.open('GET', url);
 				request.send();

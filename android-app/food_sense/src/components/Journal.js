@@ -25,13 +25,7 @@ var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunc
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];
 var recentSymptomsPicker =[];
-// for(var i = 0; i < cardData.length; i++){
-// 	var cardData = cardData[i];
-// 	if(cardObject.isSymptom){
-// 		cards.push(makeSymptomCard(cardObject, i));
-// 	}
-// 	else{ cards.push(makeFoodCard(cardObject, i)); }
-// }
+
 for(var i = 0; i < recentFoods.length; i++){
 	recentFoodsPicker.push(<Item label={recentFoods[i]} key = {i}/>);
 }
@@ -388,7 +382,7 @@ function analyzeSymptom(cardData){
 	//reset  this so we know when we got all of the chart data
 	gotChartData = 0;
 
-	var time_diff = 8;
+	var time_diff = 30;
 
 
 
@@ -403,7 +397,7 @@ function analyzeSymptom(cardData){
 
 	  if (fish.status === 200)
 		{
-	    console.log('success', fish.responseText);
+	    // console.log('success', fish.responseText);
 
 			response = fish.responseText;
 			//inner query in loop that iterates over the times received
@@ -414,10 +408,6 @@ function analyzeSymptom(cardData){
 
 
 			//Alert.alert("Here" + chartFoodCount);
-			console.log("Here" + chartFoodCount);
-
-
-
 
 				var request = new XMLHttpRequest();
 				var response;
@@ -432,7 +422,7 @@ function analyzeSymptom(cardData){
 						// console.log('success', request.responseText);
 
 						response = request.responseText;
-
+						console.log(request.responseText)
 
 
 						//Now we know that all of the data for the chart has been retrieved
@@ -461,14 +451,11 @@ function analyzeSymptom(cardData){
 				var inScope = splitResponse[chartFoodCount]
 				url = url + "SELECT fisName FROM fsa WHERE email='" + theEmail + "'  AND type='F' AND time < '"+ inScope +"' AND  time >=  ('" + ( inScope - time_diff) +"');";
 
-
-
-
-
 				request.open('GET', url);
 				request.send();
 				//=============================================================
 				chartFoodCount += 1;
+
 			}
 
 	  }

@@ -10,11 +10,12 @@
     "art": "^0.10.1",
     "d3": "^4.7.4",
     "d3-shape": "^1.0.6",
+    "native-base": "2.1.0",
     "react": "15.4.2",
     "react-native": "0.41.0",
-    "native-base": "2.1.0",
     "react-native-autocomplete-input": "^3.1.2",
     "react-native-datepicker": "^1.4.4",
+    "react-native-svg": "^5.1.7",
     "react-native-textinput-effects": "^0.3.0",
     "react-native-vector-icons": "^4.0.0"
   },

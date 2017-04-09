@@ -382,7 +382,7 @@ function analyzeSymptom(cardData){
 	//reset  this so we know when we got all of the chart data
 	gotChartData = 0;
 
-	var time_diff = 8;
+	var time_diff = 30;
 
 
 
@@ -419,7 +419,7 @@ function analyzeSymptom(cardData){
 
 					if (request.status === 200)
 					{
-						// console.log('success', request.responseText);
+						console.log('success', request.responseText);
 
 						response = request.responseText;
 
@@ -451,15 +451,10 @@ function analyzeSymptom(cardData){
 				var inScope = splitResponse[chartFoodCount]
 				url = url + "SELECT fisName FROM fsa WHERE email='" + theEmail + "'  AND type='F' AND time < '"+ inScope +"' AND  time >=  ('" + ( inScope - time_diff) +"');";
 
-
-
-
-
 				request.open('GET', url);
 				request.send();
 				//=============================================================
 				chartFoodCount += 1;
-				console.log
 			}
 
 	  }

@@ -2,10 +2,8 @@
 import React, { Component} from 'react';
 import { ScrollView, Modal, TouchableHighlight, Picker,
 	TextInput, Button, Alert} from 'react-native';
-import { Pie } from 'react-native-pathjs-charts'
 
 
-foodData = [["squirrel", 5], ["chicken", 4], ["popTarts", 15], ["snickers", 2]]
 export default class AnalyzeSymptom extends Component{
 	constructor(props) {
 		super(props);

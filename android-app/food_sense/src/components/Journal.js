@@ -404,61 +404,62 @@ function analyzeSymptom(cardData){
 			//SECOND QUERY (INNER QUERIES)=======================================
 			response = response.substring(0, response.length -2);
 			var splitResponse = response.split('+')
-			while(chartFoodCount < splitResponse.length){
-			console.log(chartFoodCount)
-
-			//Alert.alert("Here" + chartFoodCount);
-
-				var request = new XMLHttpRequest();
-				var response;
-				request.responseType = "";
-				request.onreadystatechange = (e) => {
-					if (request.readyState !== 4) {
-						return;
-					}
-
-					if (request.status === 200)
-					{
-						console.log('success', request.responseText);
-
-						response = request.responseText;
-
-
-
-						//Now we know that all of the data for the chart has been retrieved
-						if(chartFoodCount == splitResponse.length - 1)
-						{
-
-
-							gotChartData = 1;
-						}
-					}
-					else
-					{
-						console.warn('error');
-						//TODO remove this debug line
-						Alert.alert("Symptom times Response NOT received!");
-					}
-				};
-
-
-				var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
-				url = url + '?requestType=query';
-				url = url + '&query=';
-
-
-				//TODO change so time is less than splitResponse[i]  - time difference
-				var inScope = splitResponse[chartFoodCount]
-				inScope = inScope.substring(1, inScope.length)
-				console.log("inscope: " + inScope + "\n")
-				url = url + "SELECT fisName FROM fsa WHERE email='"+
-				 theEmail + "'  AND type='F' AND time < STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s') AND  time >= DATE_SUB(STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s'), INTERVAL'"+time_diff+"' HOUR);";
-
-				request.open('GET', url);
-				request.send();
-				//=============================================================
-				chartFoodCount += 1;
-			}
+			innerQuery(splitResponse, 0, time_diff)
+			// while(chartFoodCount < splitResponse.length){
+			// console.log(chartFoodCount)
+			//
+			// //Alert.alert("Here" + chartFoodCount);
+			//
+			// 	var request = new XMLHttpRequest();
+			// 	var response;
+			// 	request.responseType = "";
+			// 	request.onreadystatechange = (e) => {
+			// 		if (request.readyState !== 4) {
+			// 			return;
+			// 		}
+			//
+			// 		if (request.status === 200)
+			// 		{
+			// 			console.log('success', request.responseText);
+			//
+			// 			response = request.responseText;
+			//
+			//
+			//
+			// 			//Now we know that all of the data for the chart has been retrieved
+			// 			if(chartFoodCount == splitResponse.length - 1)
+			// 			{
+			//
+			//
+			// 				gotChartData = 1;
+			// 			}
+			// 		}
+			// 		else
+			// 		{
+			// 			console.warn('error');
+			// 			//TODO remove this debug line
+			// 			Alert.alert("Symptom times Response NOT received!");
+			// 		}
+			// 	};
+			//
+			//
+			// 	var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+			// 	url = url + '?requestType=query';
+			// 	url = url + '&query=';
+			//
+			//
+			// 	//TODO change so time is less than splitResponse[i]  - time difference
+			// 	var inScope = splitResponse[chartFoodCount]
+			// 	inScope = inScope.substring(1, inScope.length)
+			// 	console.log("inscope: " + inScope + "\n")
+			// 	url = url + "SELECT fisName FROM fsa WHERE email='"+
+			// 	 theEmail + "'  AND type='F' AND time < STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s') AND  time >= DATE_SUB(STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s'), INTERVAL'"+time_diff+"' HOUR);";
+			//
+			// 	request.open('GET', url);
+			// 	request.send();
+			// 	//=============================================================
+			// 	chartFoodCount += 1;
+			// }
 
 	  }
 		else
@@ -480,6 +481,62 @@ function analyzeSymptom(cardData){
 	fish.send();
 	//------------------------------------------------------
 
+}
+
+function innerQuery(splitResponse, chartFoodCount, time_diff){
+	console.log(splitResponse)
+	if(chartFoodCount < splitResponse.length){
+		var request = new XMLHttpRequest();
+		var response;
+		request.responseType = "";
+		request.onreadystatechange = (e) => {
+			if (request.readyState !== 4) {
+				return;
+			}
+
+			if (request.status === 200)
+			{
+				console.log('success', request.responseText);
+
+				response = request.responseText;
+
+				innerQuery(splitResponse, chartFoodCount ++, time_diff)
+
+				//Now we know that all of the data for the chart has been retrieved
+				if(chartFoodCount == splitResponse.length - 1)
+				{
+
+
+					gotChartData = 1;
+				}
+			}
+			else
+			{
+				console.warn('error');
+				//TODO remove this debug line
+				Alert.alert("Symptom times Response NOT received!");
+			}
+		};
+
+
+		var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
+		url = url + '?requestType=query';
+		url = url + '&query=';
+
+
+		//TODO change so time is less than splitResponse[i]  - time difference
+
+		var inScope = splitResponse[chartFoodCount]
+		inScope = inScope.substring(1, inScope.length)
+		console.log("inscope: " + inScope + "\n")
+		url = url + "SELECT fisName FROM fsa WHERE email='"+
+		 theEmail + "'  AND type='F' AND time < STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s') AND  time >= DATE_SUB(STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s'), INTERVAL'"+time_diff+"' HOUR);";
+		console.log("email: " + theEmail + ", inScope: " + inScope + ", time_diff: " + time_diff);
+		request.open('GET', url);
+		request.send();
+		//=============================================================
+		chartFoodCount += 1;
+	}
 }
 
 

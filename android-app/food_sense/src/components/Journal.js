@@ -11,11 +11,10 @@ import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
-theEmail = "test@test.com";
+ theEmail = "stillsingle@hotmail.com";
 
 var gotChartData = 0;
 
-var chartFoodCount = 0;
 
 var currentDate = getFullDate();
 var cont;
@@ -380,10 +379,11 @@ function makeFoodCard(cardData, pos, context){
 function analyzeSymptom(cardData){
 
 	//reset  this so we know when we got all of the chart data
-	gotChartData = 0;
+	var gotChartData = 0;
 
-	var time_diff = 30;
+	var time_diff = 9;
 
+	var chartFoodCount = 0;
 
 
 	//Data Request---------------------------------
@@ -405,7 +405,7 @@ function analyzeSymptom(cardData){
 			response = response.substring(0, response.length -2);
 			var splitResponse = response.split('+')
 			while(chartFoodCount < splitResponse.length){
-
+			console.log(chartFoodCount)
 
 			//Alert.alert("Here" + chartFoodCount);
 
@@ -449,7 +449,10 @@ function analyzeSymptom(cardData){
 
 				//TODO change so time is less than splitResponse[i]  - time difference
 				var inScope = splitResponse[chartFoodCount]
-				url = url + "SELECT fisName FROM fsa WHERE email='" + theEmail + "'  AND type='F' AND time < '"+ inScope +"' AND  time >=  ('" + ( inScope - time_diff) +"');";
+				inScope = inScope.substring(1, inScope.length)
+				console.log("inscope: " + inScope + "\n")
+				url = url + "SELECT fisName FROM fsa WHERE email='"+
+				 theEmail + "'  AND type='F' AND time < STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s') AND  time >= DATE_SUB(STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s'), INTERVAL'"+time_diff+"' HOUR);";
 
 				request.open('GET', url);
 				request.send();

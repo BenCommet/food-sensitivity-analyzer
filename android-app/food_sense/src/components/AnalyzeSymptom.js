@@ -55,7 +55,8 @@ class App extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <View>
+            <View>
 				<Picker
 				  selectedValue={this.state.hours}
 				  onValueChange={(timeSelected) => this.setState({hours: timeSelected})}>
@@ -64,8 +65,11 @@ class App extends Component {
 				  <Picker.Item label="3 Hours" value={3} />
 				  <Picker.Item label="24 Hours" value={24} />
 				</Picker>
-                <BarChart />
+            </View>
+            <ScrollView>
+            <BarChart />
             </ScrollView>
+            </View>
         )
     }
 }

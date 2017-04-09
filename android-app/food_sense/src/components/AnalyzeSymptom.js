@@ -1,68 +1,169 @@
+import React, {Component} from 'react'
+import {View, Dimensions, TouchableWithoutFeedback, ScrollView, Picker} from 'react-native'
 
-import React, { Component} from 'react';
-import { ScrollView, Modal, TouchableHighlight, Picker,
-	TextInput, Button, Alert} from 'react-native';
-import Svg,{
-    Circle,
-    Ellipse,
+import Svg, {
     G,
-    LinearGradient,
-    RadialGradient,
     Line,
     Path,
-    Polygon,
-    Polyline,
     Rect,
-    Symbol,
-    Text,
-    Use,
-    Defs,
-    Stop
-} from 'react-native-svg';
+    Text
+} from 'react-native-svg'
 
+// d3 lib
+import {
+    scaleBand,
+    scaleLinear
+} from 'd3-scale'
 
-export default class AnalyzeSymptom extends Component{
+import {
+    max,
+    ticks
+} from 'd3-array'
+
+import {
+    line
+} from 'd3-shape'
+
+import {
+    path
+} from 'd3-path'
+
+const colours = {
+    black: 'black',
+    blue: 'steelblue',
+    brown: 'brown'
+}
+
+// create the barchart (http://bl.ocks.org/mbostock/3885304)
+const data = [
+    {frequency: 2, letter: 'cheese'},
+    {frequency: 5, letter: 'nuts'},
+    {frequency: 4, letter: 'pop tarts'},
+    {frequency: 1, letter: 'duck'},
+    {frequency: 2, letter: 'eggs'},
+    {frequency: 3, letter: 'cat'},
+]
+
+class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hours: 0,
+			hours: 8,
 			foodData: [["squirrel", 5], ["chicken", 4], ["popTarts", 15], ["snickers", 2]]
 		};
 	}
-	render() {
-		return (
-			<ScrollView>
+
+    render() {
+        return (
+            <ScrollView>
 				<Picker
 				  selectedValue={this.state.hours}
 				  onValueChange={(timeSelected) => this.setState({hours: timeSelected})}>
+				  <Picker.Item label="8 Hours" value={8} />
 				  <Picker.Item label="1 Hour" value={1} />
 				  <Picker.Item label="3 Hours" value={3} />
-				  <Picker.Item label="8 Hours" value={8} />
 				  <Picker.Item label="24 Hours" value={24} />
 				</Picker>
-				<Svg
-                height="100"
-                width="100"
-            >
-                <Circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    stroke="blue"
-                    strokeWidth="2.5"
-                    fill="green"
-                />
-                <Rect
-                    x="15"
-                    y="15"
-                    width="70"
-                    height="70"
-                    stroke="red"
-                    strokeWidth="2"
-                    fill="yellow"
-                />
-            </Svg>
-			</ScrollView>
-		)
-	}
+                <BarChart />
+            </ScrollView>
+        )
+    }
 }
+
+class BarChart extends Component {
+    state = {
+        barColour: data.map(()=>colours.blue)
+    }
+
+    toggleHighlight(i) {
+        this.setState({
+            barColour: [
+                ...this.state.barColour.slice(0, i),
+                this.state.barColour[i] === colours.blue ? colours.brown : colours.blue,
+                ...this.state.barColour.slice(i+1)
+            ]
+        })
+    }
+
+    render() {
+        const screen = Dimensions.get('window')
+        const margin = {top: 50, right: 25, bottom: 200, left: 25}
+        const width = screen.width - margin.left - margin.right
+        const height = screen.height - margin.top - margin.bottom
+        const x = scaleBand()
+            .rangeRound([0, width])
+            .padding(0.1)
+            .domain(data.map(d => d.letter))
+        const maxFrequency = max(data, d => d.frequency)
+        const y = scaleLinear()
+            .rangeRound([height, 0])
+            .domain([0, maxFrequency])
+
+        const firstLetterX = x(data[0].letter)
+        const secondLetterX = x(data[1].letter)
+        const lastLetterX = x(data[data.length - 1].letter)
+        const labelDx = (secondLetterX - firstLetterX) / 2
+
+        const bottomAxis = [firstLetterX - labelDx, lastLetterX + labelDx]
+        const bottomAxisD = line()
+            .x(d => d + labelDx)
+            .y(() => 0)
+            (bottomAxis)
+
+        const leftAxis = ticks(0, maxFrequency, 5)
+        const leftAxisD = line()
+            .x(() => bottomAxis[0] + labelDx)
+            .y(d => y(d) - height)
+            (leftAxis)
+
+        const notch = 5
+        const labelDistance = 9
+
+        const svg = (
+            <Svg width={screen.width} height={screen.height}>
+                <G translate={margin.left + "," + margin.top}>
+                    <G translate={"0," + height}>
+                        <G key={-1}>
+                            <Path stroke={colours.black} d={bottomAxisD} key="-1"/>
+                            {
+                                data.map((d, i) => (
+                                    <G key={i + 1} translate={x(d.letter) + labelDx + ",0"}>
+                                        <Line stroke={colours.black} y2={notch}/>
+                                        <Text fill={colours.black} y={labelDistance}>{d.letter}</Text>
+                                    </G>
+                                ))
+                            }
+                        </G>
+                        <G key={-2}>
+                            <Path stroke={colours.black} d={leftAxisD} key="-1"/>
+                            {
+                                leftAxis.map((d, i) => (
+                                    <G key={i + 1} translate={"0," + (y(d) - height)}>
+                                        <Line stroke={colours.black} x1={notch} x2={labelDistance}/>
+                                        <Text fill={colours.black} x={-labelDistance} y={-notch}>{d}</Text>
+                                    </G>
+                                ))
+                            }
+                        </G>
+                        {
+                            data.map((d, i) => (
+                                <TouchableWithoutFeedback key={i} onPress={()=>this.toggleHighlight(i)}>
+                                    <Rect x={x(d.letter)}
+                                          y={y(d.frequency) - height}
+                                          width={x.bandwidth()}
+                                          height={height - y(d.frequency)}
+                                          fill={this.state.barColour[i]}>
+                                    </Rect>
+                                </TouchableWithoutFeedback>
+                            ))
+                        }
+                    </G>
+                </G>
+            </Svg>
+        )
+
+        return svg;
+    }
+}
+
+export default App

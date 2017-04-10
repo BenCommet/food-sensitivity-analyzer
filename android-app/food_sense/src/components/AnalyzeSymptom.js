@@ -255,9 +255,6 @@ function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
 		chartFoodCount += 1;
 	}
 	else{
-		// _navigator.push({
-		// 	id: 'AnalyzeSymptom'
-		// })
         _navigator.replace({id: 'AnalyzeSymptom'})
 
 	}

@@ -162,7 +162,7 @@ const attemptLogin = (email, password, _navigator) => {
 			else if (request.responseText == 'Success.')
 			{
 				//Alert.alert('Success.');
-				_navigator.push({
+				_navigator.replace({
 					id: 'Journal',
 					userEmail: email
 				})

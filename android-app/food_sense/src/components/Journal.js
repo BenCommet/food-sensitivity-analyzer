@@ -12,7 +12,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
-theEmail = "stillsingle@hotmail.com";
 analyzedSymptomName = "";
 var gotChartData = 0;
 correlatedFoods = [];
@@ -315,7 +314,7 @@ function makeSymptomCard(cardData, pos, context){
 				<Button
 					title = "Analyze"
 					style={{ backgroundColor: '#26A69A' }}
-					onPress={() => analyzeSymptom(cardData, context.props.navigator, 8)}>
+					onPress={() => analyzeSymptom(cardData, context.props.navigator, 8, context)}>
 				</Button>
 				</Right>
 			</CardItem>
@@ -373,9 +372,11 @@ function makeFoodCard(cardData, pos, context){
 /*******************************************************************************
 *
 *******************************************************************************/
-function analyzeSymptom(cardData, _navigator, time_diff){
+function analyzeSymptom(cardData, _navigator, time_diff, context){
 
 	//reset  this so we know when we got all of the chart data
+	context.setState({isLoading: true});
+
 	var gotChartData = 0;
 	correlatedFoods = [];
 	analyzedSymptomData = cardData;
@@ -402,7 +403,7 @@ function analyzeSymptom(cardData, _navigator, time_diff){
 			//SECOND QUERY (INNER QUERIES)=======================================
 			response = response.substring(0, response.length -2);
 			var splitResponse = response.split('+')
-			innerQuery(splitResponse, 0, time_diff, _navigator)
+			innerQuery(splitResponse, 0, time_diff, _navigator, context)
 
 	  }
 		else
@@ -427,9 +428,9 @@ function analyzeSymptom(cardData, _navigator, time_diff){
 }
 
 /*******************************************************************************
-*
+* This query
 *******************************************************************************/
-function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
+function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator, context){
 	if(chartFoodCount < splitResponse.length){
 		var request = new XMLHttpRequest();
 		var response;
@@ -445,7 +446,7 @@ function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
 
 				response = request.responseText;
 				addQueryElements(response);
-				innerQuery(splitResponse, chartFoodCount ++, time_diff, _navigator)
+				innerQuery(splitResponse, chartFoodCount ++, time_diff, _navigator, context)
 
 				//Now we know that all of the data for the chart has been retrieved
 				if(chartFoodCount == splitResponse.length - 1)
@@ -483,6 +484,8 @@ function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
 		chartFoodCount += 1;
 	}
 	else{
+		context.setState({isLoading: false});
+
 		if(correlatedFoods.length > 1){
 			_navigator.push({
 				id: 'AnalyzeSymptom'

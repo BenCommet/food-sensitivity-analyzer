@@ -11,16 +11,15 @@ import DatePicker from 'react-native-datepicker';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
- theEmail = "stillsingle@hotmail.com";
-
+theEmail = "stillsingle@hotmail.com";
+analyzedSymptomName = "";
 var gotChartData = 0;
-
+correlatedFoods = [];
 
 var currentDate = getFullDate();
-var cont;
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var startLength;
-var recentFoods = ["Chicken Sandwich", "Tomato Soup", "McDouble", "Captain Crunch"];
+var recentFoods = [];
 var recentFoodsPicker = [];
 var recentSymptoms =["Headache", "Runny Nose"];
 var recentSymptomsPicker =[];
@@ -28,9 +27,7 @@ var recentSymptomsPicker =[];
 for(var i = 0; i < recentFoods.length; i++){
 	recentFoodsPicker.push(<Item label={recentFoods[i]} key = {i}/>);
 }
-// for(var i = 0; i < recentSymptoms.length; i++){
-// 	recentSymptomsPicker.push(<Item label={recentSymptoms[i]} key = {i}/>);
-// }
+
 export default class Journal extends Component{
 	constructor(props) {
 		super(props);
@@ -60,7 +57,6 @@ export default class Journal extends Component{
     }
 
 	render() {
-		cont = this;
 		return (
 			<View>
 				<View>
@@ -260,11 +256,6 @@ const styles = StyleSheet.create({
 *******************************************************************************/
 function newJournalEntry(isSymptom, name, date, context){
 
-
-
-
-	console.log(context.state.name);
-
 	if(isSymptom){
 		context.setState({symptomModalVisible: false});
 		sendData(theEmail, name, "S", date, context);
@@ -321,7 +312,7 @@ function makeSymptomCard(cardData, pos, context){
 				<Button
 					title = "Analyze"
 					style={{ backgroundColor: '#26A69A' }}
-					onPress={() => analyzeSymptom(cardData)}>
+					onPress={() => analyzeSymptom(cardData, context.props.navigator, 8)}>
 				</Button>
 				</Right>
 			</CardItem>
@@ -376,12 +367,16 @@ function makeFoodCard(cardData, pos, context){
 	return card
 }
 
-function analyzeSymptom(cardData){
+/*******************************************************************************
+*
+*******************************************************************************/
+function analyzeSymptom(cardData, _navigator, time_diff){
 
 	//reset  this so we know when we got all of the chart data
 	var gotChartData = 0;
-
-	var time_diff = 9;
+	correlatedFoods = [];
+	analyzedSymptomData = cardData;
+	console.log(analyzedSymptomName);
 
 	var chartFoodCount = 0;
 
@@ -397,69 +392,14 @@ function analyzeSymptom(cardData){
 
 	  if (fish.status === 200)
 		{
-	    console.log('success', fish.responseText);
+	    // console.log('success', fish.responseText);
 
 			response = fish.responseText;
 			//inner query in loop that iterates over the times received
 			//SECOND QUERY (INNER QUERIES)=======================================
 			response = response.substring(0, response.length -2);
 			var splitResponse = response.split('+')
-			innerQuery(splitResponse, 0, time_diff)
-			// while(chartFoodCount < splitResponse.length){
-			// console.log(chartFoodCount)
-			//
-			// //Alert.alert("Here" + chartFoodCount);
-			//
-			// 	var request = new XMLHttpRequest();
-			// 	var response;
-			// 	request.responseType = "";
-			// 	request.onreadystatechange = (e) => {
-			// 		if (request.readyState !== 4) {
-			// 			return;
-			// 		}
-			//
-			// 		if (request.status === 200)
-			// 		{
-			// 			console.log('success', request.responseText);
-			//
-			// 			response = request.responseText;
-			//
-			//
-			//
-			// 			//Now we know that all of the data for the chart has been retrieved
-			// 			if(chartFoodCount == splitResponse.length - 1)
-			// 			{
-			//
-			//
-			// 				gotChartData = 1;
-			// 			}
-			// 		}
-			// 		else
-			// 		{
-			// 			console.warn('error');
-			// 			//TODO remove this debug line
-			// 			Alert.alert("Symptom times Response NOT received!");
-			// 		}
-			// 	};
-			//
-			//
-			// 	var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
-			// 	url = url + '?requestType=query';
-			// 	url = url + '&query=';
-			//
-			//
-			// 	//TODO change so time is less than splitResponse[i]  - time difference
-			// 	var inScope = splitResponse[chartFoodCount]
-			// 	inScope = inScope.substring(1, inScope.length)
-			// 	console.log("inscope: " + inScope + "\n")
-			// 	url = url + "SELECT fisName FROM fsa WHERE email='"+
-			// 	 theEmail + "'  AND type='F' AND time < STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s') AND  time >= DATE_SUB(STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s'), INTERVAL'"+time_diff+"' HOUR);";
-			//
-			// 	request.open('GET', url);
-			// 	request.send();
-			// 	//=============================================================
-			// 	chartFoodCount += 1;
-			// }
+			innerQuery(splitResponse, 0, time_diff, _navigator)
 
 	  }
 		else
@@ -483,8 +423,10 @@ function analyzeSymptom(cardData){
 
 }
 
-function innerQuery(splitResponse, chartFoodCount, time_diff){
-	console.log(splitResponse)
+/*******************************************************************************
+*
+*******************************************************************************/
+function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
 	if(chartFoodCount < splitResponse.length){
 		var request = new XMLHttpRequest();
 		var response;
@@ -496,11 +438,11 @@ function innerQuery(splitResponse, chartFoodCount, time_diff){
 
 			if (request.status === 200)
 			{
-				console.log('success', request.responseText);
+				// console.log('success', request.responseText);
 
 				response = request.responseText;
-
-				innerQuery(splitResponse, chartFoodCount ++, time_diff)
+				addQueryElements(response);
+				innerQuery(splitResponse, chartFoodCount ++, time_diff, _navigator)
 
 				//Now we know that all of the data for the chart has been retrieved
 				if(chartFoodCount == splitResponse.length - 1)
@@ -528,18 +470,57 @@ function innerQuery(splitResponse, chartFoodCount, time_diff){
 
 		var inScope = splitResponse[chartFoodCount]
 		inScope = inScope.substring(1, inScope.length)
-		console.log("inscope: " + inScope + "\n")
+		// console.log("inscope: " + inScope + "\n")
 		url = url + "SELECT fisName FROM fsa WHERE email='"+
 		 theEmail + "'  AND type='F' AND time < STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s') AND  time >= DATE_SUB(STR_TO_DATE('"+ inScope +"', '%Y-%m-%d %H:%i:%s'), INTERVAL'"+time_diff+"' HOUR);";
-		console.log("email: " + theEmail + ", inScope: " + inScope + ", time_diff: " + time_diff);
+		// console.log("email: " + theEmail + ", inScope: " + inScope + ", time_diff: " + time_diff);
 		request.open('GET', url);
 		request.send();
 		//=============================================================
 		chartFoodCount += 1;
 	}
+	else{
+		_navigator.push({
+			id: 'AnalyzeSymptom'
+		})
+	}
 }
 
+/*******************************************************************************
+*
+*******************************************************************************/
+function addQueryElements(rawResult){
+	console.log("feesh: " + rawResult)
+	//Split the returned string by the seperator value
+	splitResult = rawResult.split('+');
+	//Strip out the garbage characters the server returns
+	for(var i = 0; i < splitResult.length; i++){
+		splitResult[i] = splitResult[i].substring(1, splitResult[i].length);
+	}
+	//The split has an empty element at the end of the array, kill it
+	splitResult.splice(splitResult.length - 1);
+	//Now we can iterate over the array and add to our counts of food eaten
+	for(var i = 0; i < splitResult.length; i++){
+		for(var j = 0; j < correlatedFoods.length; j++){
+			if(splitResult[i] === correlatedFoods[j].food){
+				correlatedFoods[j].frequency ++;
+			}
+			else{
+				correlatedFoods.push({frequency: 1, food: splitResult[i]});
+			}
 
+		}
+		if(correlatedFoods.length === 0){
+			correlatedFoods.push({frequency: 1, food: splitResult[i]});
+		}
+	}
+	console.log("deesh: " + splitResult);
+	console.log(correlatedFoods);
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 function deleteCard(pos, context){
 	var arrPosition = pos;
 	var currentLength = context.state.cards.length;
@@ -558,7 +539,9 @@ function deleteCard(pos, context){
 	deleteFromDatabase(theEmail, delCardData[1], delCardData[2], context);
 }
 
-
+/*******************************************************************************
+*
+*******************************************************************************/
 function deleteFromDatabase(email, name, time, context){
 	console.log(name + ' : ' + time);
 
@@ -574,7 +557,7 @@ function deleteFromDatabase(email, name, time, context){
 
 		if (request.status === 200)
 		{
-			console.log('success', request.responseText);
+			// console.log('success', request.responseText);
 			//Alert.alert(request.responseText);
 		}
 		else

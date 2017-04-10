@@ -493,6 +493,7 @@ function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator, contex
 		}
 		else{
 			Alert.alert("Insufficient data to perform analysis, eat some more food");
+			context.setState({isLoading: false})
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Dimensions, TouchableWithoutFeedback, ScrollView, Picker} from 'react-native'
+import {View, Dimensions, TouchableWithoutFeedback, ScrollView, Picker, Alert} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Svg, {G, Line, Path, Rect, Text} from 'react-native-svg'
@@ -262,6 +262,10 @@ function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
 		}
 		else{
 			Alert.alert("Insufficient data to perform analysis, eat some more food");
+			_navigator.replace({
+				id: 'Journal'
+			})
+
 		}
 
 	}

@@ -18,6 +18,8 @@ class App extends Component {
 		super(props);
 		this.state = {
 			hours: 8,
+			isLoading: false
+
 		};
 	}
 
@@ -25,10 +27,11 @@ class App extends Component {
         console.log("cardData:" + analyzedSymptomData);
         return (
             <View>
+			 <Spinner visible={this.state.isLoading} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
                 <View>
     				<Picker
     				  selectedValue={currentTimePeriod}
-    				  onValueChange={(timeSelected) => analyzeSymptom(analyzedSymptomData, this.props.navigator, timeSelected)}>
+    				  onValueChange={(timeSelected) => analyzeSymptom(analyzedSymptomData, this.props.navigator, timeSelected, this)}>
 
     				  <Picker.Item label="8 Hours" value={8} />
     				  <Picker.Item label="1 Hour" value={1} />
@@ -145,11 +148,11 @@ export default App
 /*******************************************************************************
 *
 *******************************************************************************/
-function analyzeSymptom(cardData, _navigator, time_diff){
+function analyzeSymptom(cardData, _navigator, time_diff, context){
+    context.setState({isLoading: true});
     currentTimePeriod = time_diff;
 	//reset  this so we know when we got all of the chart data
 	var gotChartData = 0;
-	correlatedFoods = [];
 	analyzedSymptomData = cardData;
 	var chartFoodCount = 0;
 
@@ -165,12 +168,12 @@ function analyzeSymptom(cardData, _navigator, time_diff){
 
 	  if (fish.status === 200)
 		{
-
 			response = fish.responseText;
 			//inner query in loop that iterates over the times received
 			//SECOND QUERY (INNER QUERIES)=======================================
 			response = response.substring(0, response.length -2);
 			var splitResponse = response.split('+')
+            correlatedFoods=[];
 			innerQuery(splitResponse, 0, time_diff, _navigator)
 
 	  }
@@ -252,9 +255,11 @@ function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
 		chartFoodCount += 1;
 	}
 	else{
-		_navigator.push({
-			id: 'AnalyzeSymptom'
-		})
+		// _navigator.push({
+		// 	id: 'AnalyzeSymptom'
+		// })
+        _navigator.replace({id: 'AnalyzeSymptom'})
+
 	}
 }
 

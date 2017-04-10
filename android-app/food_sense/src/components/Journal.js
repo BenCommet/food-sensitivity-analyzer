@@ -8,6 +8,7 @@ const Item = Picker.Item;
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions';
 import DatePicker from 'react-native-datepicker';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').height;
@@ -43,7 +44,8 @@ export default class Journal extends Component{
 			date: currentDate,
 			cards: [],
 			recentFoodsPicker: [],
-			recentSymptomsPicker: []
+			recentSymptomsPicker: [],
+			isLoading: true
 		};
 	}
 
@@ -59,6 +61,7 @@ export default class Journal extends Component{
 	render() {
 		return (
 			<View>
+			 <Spinner visible={this.state.isLoading} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
 				<View>
 			        <Modal
 			          animationType={"slide"}
@@ -659,6 +662,7 @@ function getData(_email, context){
 					context.setState({cards: tempCards});
 					context.setState({recentFoodsPicker: tempFoodPicker});
 					context.setState({recentSymptomsPicker: tempSymptomPicker})
+					context.setState({isLoading: false})
 			  }
 				else
 				{

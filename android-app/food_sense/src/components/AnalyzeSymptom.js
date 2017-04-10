@@ -1,38 +1,16 @@
 import React, {Component} from 'react'
 import {View, Dimensions, TouchableWithoutFeedback, ScrollView, Picker} from 'react-native'
+import Spinner from 'react-native-loading-spinner-overlay';
 
-import Svg, {
-    G,
-    Line,
-    Path,
-    Rect,
-    Text
-} from 'react-native-svg'
+import Svg, {G, Line, Path, Rect, Text} from 'react-native-svg'
 
 // d3 lib
-import {
-    scaleBand,
-    scaleLinear
-} from 'd3-scale'
+import {scaleBand, scaleLinear} from 'd3-scale'
+import {max, ticks} from 'd3-array'
+import {line} from 'd3-shape'
+import {path} from 'd3-path'
 
-import {
-    max,
-    ticks
-} from 'd3-array'
-
-import {
-    line
-} from 'd3-shape'
-
-import {
-    path
-} from 'd3-path'
-
-const colours = {
-    black: 'black',
-    blue: 'steelblue',
-    brown: 'brown'
-}
+const colours = {black: 'black', blue: 'steelblue', brown: 'brown'}
 
 var currentTimePeriod = 8;
 class App extends Component {
@@ -40,7 +18,6 @@ class App extends Component {
 		super(props);
 		this.state = {
 			hours: 8,
-			foodData: [["squirrel", 5], ["chicken", 4], ["popTarts", 15], ["snickers", 2]]
 		};
 	}
 
@@ -48,20 +25,20 @@ class App extends Component {
         console.log("cardData:" + analyzedSymptomData);
         return (
             <View>
-            <View>
-				<Picker
-				  selectedValue={currentTimePeriod}
-				  onValueChange={(timeSelected) => analyzeSymptom(analyzedSymptomData, this.props.navigator, timeSelected)}>
+                <View>
+    				<Picker
+    				  selectedValue={currentTimePeriod}
+    				  onValueChange={(timeSelected) => analyzeSymptom(analyzedSymptomData, this.props.navigator, timeSelected)}>
 
-				  <Picker.Item label="8 Hours" value={8} />
-				  <Picker.Item label="1 Hour" value={1} />
-				  <Picker.Item label="3 Hours" value={3} />
-				  <Picker.Item label="24 Hours" value={24} />
-				</Picker>
-            </View>
-            <ScrollView>
-            <BarChart />
-            </ScrollView>
+    				  <Picker.Item label="8 Hours" value={8} />
+    				  <Picker.Item label="1 Hour" value={1} />
+    				  <Picker.Item label="3 Hours" value={3} />
+    				  <Picker.Item label="24 Hours" value={24} />
+    				</Picker>
+                </View>
+                <ScrollView>
+                <BarChart />
+                </ScrollView>
             </View>
         )
     }

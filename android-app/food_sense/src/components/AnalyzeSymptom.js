@@ -255,7 +255,14 @@ function innerQuery(splitResponse, chartFoodCount, time_diff, _navigator){
 		chartFoodCount += 1;
 	}
 	else{
-        _navigator.replace({id: 'AnalyzeSymptom'})
+        if(correlatedFoods.length > 1){
+			_navigator.replace({
+				id: 'AnalyzeSymptom'
+			})
+		}
+		else{
+			Alert.alert("Insufficient data to perform analysis, eat some more food");
+		}
 
 	}
 }

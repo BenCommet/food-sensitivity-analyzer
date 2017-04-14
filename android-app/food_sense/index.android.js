@@ -19,6 +19,7 @@ import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
 import Journal from './src/components/Journal';
 import AnalyzeSymptom from './src/components/AnalyzeSymptom';
+import ResetPassword from './src/components/ResetPassword';
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
   if (_navigator.getCurrentRoutes().length === 1  ) {
@@ -49,6 +50,8 @@ export default class food_sense extends Component {
         return(<Login navigator={navigator} title = "Login"/>);
       case 'SignUp':
         return(<SignUp navigator={navigator} title = "SignUp"/>);
+      case 'ResetPassword':
+        return(<ResetPassword navigator={navigator} title = "ResetPassword"/>);
       case 'Journal':
         return(<Journal navigator={navigator} userEmail = {Journal.userEmail} title = "Journal"/>);
       case 'AnalyzeSymptom':

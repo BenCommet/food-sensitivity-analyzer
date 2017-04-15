@@ -140,7 +140,8 @@ const onResetPress = (email, _oldPassword, _newPassword1, _newPassword2, _naviga
 	else
   {
 
-		attemptResetPassword(email, _oldPassword, _newPassword1, _newPassword2, _navigator);
+
+		//attemptResetPassword(email, _oldPassword, _newPassword1, _newPassword2, _navigator);
 
 	}
 };

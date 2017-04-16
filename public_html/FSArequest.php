@@ -39,6 +39,8 @@ $itemType        = $_GET['itemType'];
 $itemName        = $_GET['itemName'];
 $time            = $_GET['time'];
 $description     = $_GET['desc'];
+
+$newPassword     = $_GET['newPassword'];
 //database entry names: userName, email, password, type, fisName, time, description
 
 //echo $requestType;
@@ -197,6 +199,55 @@ if($requestType == "userLogin")
 
 
 }
+
+
+
+//resetPassword
+if($requestType == "resetPassword")
+{
+    try{
+
+
+        //check if any users have this email
+        $result = $db->query("SELECT * FROM fsa WHERE email='$email';");
+        $countEmail = $result->rowCount();
+
+        //check if this password goes with this email
+        $result = $db->query("SELECT * FROM fsa WHERE email='$email' AND password='$password';");
+        $countEmailAndPassword = $result->rowCount();
+
+
+        if($countEmail > 0 && $countEmailAndPassword == 0)
+        {
+            echo "Incorrect Password.";
+        }
+        else if($countEmail == 0)
+        {
+            echo "No such user.";
+        }
+        else
+        {
+
+
+            /*Change password*/
+        $db->exec("UPDATE fsa  SET password='$newPassword' WHERE email='$email';");
+
+            echo "Success.";
+        }
+
+    }
+    catch(Exception $e)
+    {
+        echo "Error";
+    }
+
+
+}
+
+
+
+
+
 
 
 

@@ -140,7 +140,7 @@ const onResetPress = (email, _oldPassword, _newPassword1, _newPassword2, _naviga
 	else
   {
 
-		//attemptResetPassword(email, _oldPassword, _newPassword1, _newPassword2, _navigator);
+		attemptResetPassword(email, _oldPassword, _newPassword1, _newPassword2, _navigator);
 
 	}
 };
@@ -186,16 +186,15 @@ const attemptResetPassword = (email, _oldPassword, _newPassword1, _newPassword2,
 			/**/
 			else if (request.responseText == 'Success.')
 			{
-				//Alert.alert('Success.');
+				Alert.alert('Your password has been changed.');
 				_navigator.replace({
-					id: 'Journal',
-					userEmail: email
+					id: 'Login'
 				})
 			}
 			/*An error occurred*/
 			else
 			{
-				Alert.alert('There was an error attempting to log in. Response:' + request.responseText);
+				Alert.alert('There was an error attempting to reset password. Response:' + request.responseText);
 			}
 
 		}
@@ -210,11 +209,13 @@ const attemptResetPassword = (email, _oldPassword, _newPassword1, _newPassword2,
 
 
 	var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
-	url = url + '?requestType=userLogin';
+	url = url + '?requestType=resetPassword';
 	url = url + '&password=';
-	url = url + password;
+	url = url + _oldPassword;
 	url = url + '&email=';
 	url = url + email;
+  url = url + '&newPassword=';
+	url = url + _newPassword1;
 	//Alert.alert(_email);
 
 

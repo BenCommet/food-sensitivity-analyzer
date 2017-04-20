@@ -60,7 +60,11 @@ export default class Journal extends Component{
 	render() {
 		return (
 			<View>
-			 <Spinner visible={this.state.isLoading} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+				<StatusBar
+				  backgroundColor='#009688'
+				  barStyle="light-content"
+				/>
+			 	<Spinner visible={this.state.isLoading} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
 				<View>
 			        <Modal
 			          animationType={"slide"}
@@ -719,7 +723,8 @@ function sendData(_email, _itemName, _itemType, _time,  context){
 						var card = makeFoodCard(cardData, context.state.cards.length + 1, context);
 					tempCards = context.state.cards;
 					tempCards.splice(0, 0, card);
-					context.setState({cards: tempCards, name:"", allCardData: tempAllCardData});
+					// context.setState({cards: tempCards, name:"", allCardData: tempAllCardData});
+					getData(theEmail, context);
 			  }
 				else
 				{

@@ -15,7 +15,7 @@ const width = Dimensions.get('window').height;
 analyzedSymptomName = "";
 var gotChartData = 0;
 correlatedFoods = [];
-
+theEmail = "a@a.com";
 var currentDate = getFullDate();
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var startLength;
@@ -212,36 +212,38 @@ export default class Journal extends Component{
 				<ScrollView>
 					{this.state.cards}
 				</ScrollView>
-
-				<Fab
-          active={this.state.active}
-          direction="up"
-          style={{ backgroundColor: '#26A69A' }}
-          position="bottomRight"
-        	onPress={() => this.setState({ active: !this.state.active })}
-        >
-			    <Icon name="plus" />
-					<Button
+				<View style = {styles.fabStyle}>
+					<Fab
+			          active={this.state.active}
+			          direction="up"
+			          style={{ backgroundColor: '#26A69A' }}
+			          position="bottomRight"
+					  containerStyle={{bottom: 65}}
+			        	onPress={() => this.setState({ active: !this.state.active })}
+			        >
+					    <Icon name="plus" />
+						<Button
+							title = ""
+							style={{ backgroundColor: '#26A69A' }}
+							onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
+					        <Icon
+							 	active name ='cutlery'
+							 	size = {height * .04}
+								color = "#FFFFFF"
+							/>
+				      	</Button>
+						<Button
 						title = ""
 						style={{ backgroundColor: '#26A69A' }}
-						onPress={() => this.setState({ foodModalVisible: !this.state.foodModalVisible, active: !this.state.active})}>
-				        <Icon
-						 	active name ='cutlery'
-						 	size = {height * .04}
-							color = "#FFFFFF"
-						/>
-			      	</Button>
-					<Button
-					title = ""
-					style={{ backgroundColor: '#26A69A' }}
-					onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible, active: !this.state.active})}>
-	      		<Icon
-						 	active name ='heartbeat'
-						 	size = {height * .04}
-							color = "#FFFFFF"
-						/>
-			    	</Button>
-      	</Fab>
+						onPress={() => this.setState({ symptomModalVisible: !this.state.symptomModalVisible, active: !this.state.active})}>
+		      				<Icon
+							 	active name ='heartbeat'
+							 	size = {height * .04}
+								color = "#FFFFFF"
+							/>
+				    	</Button>
+	      			</Fab>
+				</View>
 			</View>
 		);
 	}
@@ -253,6 +255,13 @@ const styles = StyleSheet.create({
 	},
 	cardHeaderText:{
 		fontSize: height * .05
+	},
+	fabStyle:{
+		position: 'absolute',
+	    justifyContent: 'center',
+	    alignItems: 'center',
+	    top: height * 1,
+	    marginLeft: width * .55
 	}
 
 });
@@ -575,6 +584,7 @@ function deleteFromDatabase(email, name, time, context){
 		{
 			// console.log('success', request.responseText);
 			//Alert.alert(request.responseText);
+			getData(email, context);
 		}
 		else
 		{

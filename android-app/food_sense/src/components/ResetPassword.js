@@ -12,7 +12,9 @@ export default class Login extends Component{
 		super(props);
 		this.state = {
 			email: '',
-			password: ''
+			oldPassword: '',
+      newPassword1: '',
+      newPassword2: ''
 		};
 	}
 
@@ -40,7 +42,7 @@ export default class Login extends Component{
 								value = {this.state.email}
 								onChangeText = {email => this.setState({email})}
 								onSubmitEditing={(event) => {
-									this.refs.passwordText.focus();
+									this.refs.oldPasswordText.focus();
 								}}
 							  />
 					</View>
@@ -48,41 +50,52 @@ export default class Login extends Component{
 					<View style = {{marginTop:height * .02}}>
 						<Fumi
 						  	style = {styles.input}
-							ref="passwordText"
-							label={'Enter Password'}
+							ref="oldPasswordText"
+							label={'Old Password'}
 							iconClass={FontAwesomeIcon}
 							iconName={'key'}
 							iconColor={'#26A69A'}
 							secureTextEntry = {true}
-							value = {this.state.password}
-							onChangeText = {password => this.setState({password})}
+							value = {this.state.oldPassword}
+							onChangeText = {oldPassword => this.setState({oldPassword})}
 						/>
 					</View>
 
-					<View style = {{marginTop: height * .1}}>
-						<Button
-							ref = "loginButton"
-							onPress = {()=>onLoginPress(this.state.email, this.state.password, this.props.navigator)}
-							title = "Login"
-							color = "#26A69A"
-							accessibilityLabel="Login to the Application after entering password"
+          <View style = {{marginTop:height * .02}}>
+						<Fumi
+						  	style = {styles.input}
+							ref="newPasswordText1"
+							label={'New Password'}
+							iconClass={FontAwesomeIcon}
+							iconName={'key'}
+							iconColor={'#26A69A'}
+							secureTextEntry = {true}
+							value = {this.state.newPassword1}
+							onChangeText = {newPassword1 => this.setState({newPassword1})}
 						/>
 					</View>
 
-					<View style = {styles.responsiveSpacing}>
-						<Button
-							onPress = {()=>onSignUpPress(this.props.navigator)}
-							title = "Sign Up"
-							color = "#26A69A"
-							accessibilityLabel="Sign Up for the Application"
+          <View style = {{marginTop:height * .02}}>
+						<Fumi
+						  	style = {styles.input}
+							ref="newPasswordText2"
+							label={'Confirm New Password'}
+							iconClass={FontAwesomeIcon}
+							iconName={'key'}
+							iconColor={'#26A69A'}
+							secureTextEntry = {true}
+							value = {this.state.newPassword2}
+							onChangeText = {newPassword2 => this.setState({newPassword2})}
 						/>
 					</View>
+
+
 					<View style = {styles.responsiveSpacing}>
 						<Button
-							onPress = {()=>onResetPress(this.props.navigator)}
-							title = "Change Password"
+							onPress = {()=>onResetPress(this.state.email, this.state.oldPassword, this.state.newPassword1, this.state.newPassword2, this.props.navigator)}
+							title = "Reset Password"
 							color = "#26A69A"
-							accessibilityLabel="Change Password"
+							accessibilityLabel="Reset your password"
 						/>
 					</View>
 				</ScrollView>
@@ -106,35 +119,30 @@ const styles = StyleSheet.create({
 		fontSize: 30
 	},
 	responsiveSpacing: {
-		marginTop: height * .05
+		marginTop: height * .1
 	}
 });
 
 {/* This handles login button presses*/}
-const onLoginPress = (email, password, _navigator) => {
-	if(!validateEmail(email)){
+const onResetPress = (email, _oldPassword, _newPassword1, _newPassword2, _navigator) => {
+	if(!validateEmail(email))
+  {
 		Alert.alert("Please input a valid email address");
 	}
-	else{
+  else if(_newPassword1 != _newPassword2)
+  {
+    Alert.alert("You new password entries do not match.");
+  }
+  else if(_oldPassword == '' || _newPassword1 == '' || _newPassword2 == '')
+  {
+    Alert.alert("All boxes must be filled.");
+  }
+	else
+  {
 
-		attemptLogin(email, password, _navigator);
+		attemptResetPassword(email, _oldPassword, _newPassword1, _newPassword2, _navigator);
 
 	}
-};
-
-{/* This handles login button presses*/}
-const onSignUpPress = (_navigator) => {
-	_navigator.push({
-		id: 'SignUp'
-	})
-};
-
-
-{/* This handles Reset Password button presses*/}
-const onResetPress = (_navigator) => {
-	_navigator.push({
-		id: 'ResetPassword'
-	})
 };
 
 
@@ -146,7 +154,7 @@ function validateEmail(email)
 }
 
 {/*TODO Integrate with database to check for valid login*/}
-const attemptLogin = (email, password, _navigator) => {
+const attemptResetPassword = (email, _oldPassword, _newPassword1, _newPassword2, _navigator) => {
 	theEmail = email;
 	/*validate user email/password */
 
@@ -178,16 +186,15 @@ const attemptLogin = (email, password, _navigator) => {
 			/**/
 			else if (request.responseText == 'Success.')
 			{
-				//Alert.alert('Success.');
+				Alert.alert('Your password has been changed.');
 				_navigator.replace({
-					id: 'Journal',
-					userEmail: email
+					id: 'Login'
 				})
 			}
 			/*An error occurred*/
 			else
 			{
-				Alert.alert('There was an error attempting to log in. Response:' + request.responseText);
+				Alert.alert('There was an error attempting to reset password. Response:' + request.responseText);
 			}
 
 		}
@@ -202,11 +209,13 @@ const attemptLogin = (email, password, _navigator) => {
 
 
 	var url = 'http://www.cis.gvsu.edu/~hickoxm/FSArequest.php';
-	url = url + '?requestType=userLogin';
+	url = url + '?requestType=resetPassword';
 	url = url + '&password=';
-	url = url + password;
+	url = url + _oldPassword;
 	url = url + '&email=';
 	url = url + email;
+  url = url + '&newPassword=';
+	url = url + _newPassword1;
 	//Alert.alert(_email);
 
 

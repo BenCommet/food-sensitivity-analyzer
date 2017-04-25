@@ -34,11 +34,12 @@ export default class SignUp extends Component{
 							value = {this.state.username}
 							onChangeText = {username => this.setState({username})}
 							onSubmitEditing={(event) => {
-								this.refs.passwordText.focus();
+								this.refs.emailText.focus();
 							}}
 						  />
 						<Fumi
 						  	style = {styles.input}
+							ref="emailText"
 							label={'Email'}
 							iconClass={FontAwesomeIcon}
 							iconName={'envelope'}
@@ -74,7 +75,6 @@ export default class SignUp extends Component{
   							value = {this.state.confirmPassword}
   							onChangeText = {confirmPassword => this.setState({confirmPassword})}
   							onSubmitEditing={(event) => {
-  								this.refs.passwordText.focus();
   							}}
   						  />
 						  <View style = {{marginTop: height * .05}}>

@@ -15,7 +15,6 @@ const width = Dimensions.get('window').height;
 analyzedSymptomName = "";
 var gotChartData = 0;
 correlatedFoods = [];
-theEmail = "a@a.com";
 var currentDate = getFullDate();
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var startLength;
